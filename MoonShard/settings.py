@@ -135,3 +135,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+# 告诉Django用户登录成功/注销后如果contrib.auth.views.login视图（view）没有获取到next参数将会默认重定向到哪个URL
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'

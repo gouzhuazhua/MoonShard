@@ -16,14 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from xadmin.plugins import xversion
+from underlord import views as ud_views
 
 import xadmin
 xadmin.autodiscover()
 xversion.register_models()
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('', ud_views.index, name='index'),
     path('admin/', xadmin.site.urls),
 
-    path('', include('underlord.urls')),
+    # path('', include('underlord.urls')),
+    path('underlord/', include('underlord.urls')),
+    path('underlord/', include('django.contrib.auth.urls')),
 ]
