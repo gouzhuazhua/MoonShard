@@ -27,6 +27,8 @@ urlpatterns = [
     path('admin/', xadmin.site.urls),
 
     # path('', include('underlord.urls')),
-    path('underlord/', include('underlord.urls')),
-    path('underlord/', include('django.contrib.auth.urls')),
+    path('accounts/', include('underlord.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    path('learning/', include('rubick.urls')),
 ]

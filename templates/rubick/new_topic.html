@@ -1,29 +1,25 @@
 {% extends 'base.html' %}
 
-{% block title %}修改个人资料{% endblock %}
-
+{% block title %}新建主题{% endblock %}
+{% block media_link %}{{ form.media }}{% endblock %}
 {% block content %}
     <div class="flex-center">
     <div class="container">
         <div class="flex-center">
             <div class="unit-1-2 unit-1-on-mobile">
-                <h3>个人资料修改</h3>
-                <form class="form" action="{% url 'underlord:update_user' %}" method="post">
+                <h3>新建主题</h3>
+                <form class="form" action="{% url 'rubick:new_topic' %}" method="post">
                     {% csrf_token %}
-                    <h5 style="color: red">{{ data.message }}</h5>
+                    {{ form.non_field_errors }}
                     {% for field in form %}
-                        {% if field.is_hidden %}
-                            {{ field }}
-                        {% else %}
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {{ field.errors }}
-                            {% if field.help_text %}
-                                <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
-                            {% endif %}
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+                        {% if field.help_text %}
+                            <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
                         {% endif %}
                     {% endfor %}
-                    <button type="submit" class="btn btn-primary btn-block">修改</button>
+                    <button type="submit" class="btn btn-primary btn-block">新建</button>
                     <input type="hidden" name="next" value="{{ next }}"/>
                 </form>
                 <div class="flex-left top-gap text-small">
@@ -34,5 +30,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

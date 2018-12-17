@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %} 学习交流 {% endblock %}
+
+{% block content %}
+    <button class="btn btn-default"><a href="{% url 'new_topic' %}">+</a></button>
+    {% for topic in all_topics %}
+        <h3 style="color: red">{{ topic.title }}</h3>
+        <h5 style="color: #1b9dec">{{ topic.starter }}  {{ topic.created_at }}</h5>
+        <p>{{ topic.subject }}</p>
+    {% endfor %}
+{% endblock %}
