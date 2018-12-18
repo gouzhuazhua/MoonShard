@@ -45,6 +45,28 @@ class ReplyAdmin(object):
     search_fields = ('message',)
 
 
+class TagAdmin(object):
+    list_display = ('title',
+                    'color',
+                    )
+    list_per_page = 20
+    ordering = ('id',)
+    list_display_links = ('title',)
+    search_fields = ('title',)
+
+
+class TopicTagAdmin(object):
+    list_display = ('topic',
+                    'tag',
+                    )
+    list_per_page = 20
+    ordering = ('id',)
+    list_display_links = ('topic',)
+    search_fields = ('topic',)
+
+
 xadmin.site.register(Topic, TopicAdmin)
 xadmin.site.register(Post, PostAdmin)
 xadmin.site.register(Reply, ReplyAdmin)
+xadmin.site.register(Tag, TagAdmin)
+xadmin.site.register(TopicTag, TopicTagAdmin)

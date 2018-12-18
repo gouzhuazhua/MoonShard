@@ -5,10 +5,11 @@
 # @Software: PyCharm
 
 from django.urls import path, include
-from .views import *
+from . import views
 
 app_name = 'rubick'
 urlpatterns = [
-    path('home/', ToHome().to_home, name='home'),
-    path('newTopic/', new_topic, name='new_topic'),
+    path('home/', views.ToHome().to_home, name='home'),
+    path('newTopic/', views.new_topic, name='new_topic'),
+    path('getTags/', views.get_tags, name='get_tags'),
 ]

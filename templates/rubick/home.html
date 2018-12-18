@@ -3,10 +3,16 @@
 {% block title %} 学习交流 {% endblock %}
 
 {% block content %}
-    <button class="btn btn-default"><a href="{% url 'new_topic' %}">+</a></button>
-    {% for topic in all_topics %}
-        <h3 style="color: red">{{ topic.title }}</h3>
-        <h5 style="color: #1b9dec">{{ topic.starter }}  {{ topic.created_at }}</h5>
-        <p>{{ topic.subject }}</p>
-    {% endfor %}
+    <div style="text-align: center">
+        <button class="btn btn-default"><a href="{% url 'rubick:new_topic' %}">新建主题</a></button>
+        {% for topic in all_topics %}
+            <div>
+                <h5><a href="">{{ topic.title }}</a></h5>
+                <p>{{ topic.starter }}  {{ topic.created_at }}</p>
+            </div>
+{#            {% autoescape off %}#}
+{#                {{ topic.subject }}#}
+{#            {% endautoescape %}#}
+        {% endfor %}
+    </div>
 {% endblock %}
