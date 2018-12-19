@@ -1,0 +1,13 @@
+body{
+    min-height:100%;
+    position:absolute;
+}
+
+.container{
+    padding-bottom: 30px; /*需要 >= footer的height值*/
+}
+
+#footer{
+    position:absolute;
+    bottom:0;
+}

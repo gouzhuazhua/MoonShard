@@ -4,36 +4,142 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="icon" type="image/x-icon" href="{% static 'icon/moonshard.ico' %}">
-    <title>{% block title %}Welcome to MoonShard{% endblock %}</title>
-    <link rel="stylesheet" href="https://unpkg.com/mobi.css/dist/mobi.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     {% block media_link %} {% endblock %}
 </head>
 <body>
-<div class="flex-center">
-    <div class="container">
-        <div>
-            <h1 class="logo"><a href="{% url 'index' %}" style="text-decoration: none">MoonShard</a></h1>
-            {% if user.is_authenticated %}
-                <p>你已登录，欢迎你：<a href="{% url 'underlord:update_user' %}" style="text-decoration: none">{{ user.username }}</a></p>
-                <button class="btn btn-default"><a href="{% url 'logout' %}?next={{ request.path }}" style="text-decoration: none">注销登陆</a></button>
-            {% else %}
-                <p>你还没有登录，请
-                    <button class="btn btn-default"><a href="{% url 'login' %}?next={{ request.path }}" style="text-decoration: none">登录</a></button>
-                    或者
-                    <button class="btn btn-default"><a href="{% url 'underlord:register' %}" style="text-decoration: none">注册</a></button>
-                </p>
-            {% endif %}
-        </div>
-    </div>
-</div>
+    <style>
+    .demo-layout-waterfall .mdl-layout__header-row .mdl-navigation__link:last-of-type  {
+        padding-right: 0;
+    }
+    </style>
 
-{% block content %}{% endblock %}
-<script
-    src="https://code.jquery.com/jquery-3.3.1.js"
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"></script>
-{% block script_content %}{% endblock %}
+    <div class="demo-layout-waterfall mdl-layout mdl-js-layout" style="position: relative; margin-top: 0;">
+        <header class="mdl-layout__header mdl-layout__header--waterfall">
+            <!-- Top row, always visible -->
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">MoonShard</span>
+                <div class="mdl-layout-spacer"></div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="waterfall-exp">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" name="sample"
+                        id="waterfall-exp">
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom row, not visible on scroll -->
+            <div class="mdl-layout__header-row">
+                <div class="mdl-layout-spacer">
+                    <!-- Navigation -->
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" href="">Link</a>
+                        <a class="mdl-navigation__link" href="">Link</a>
+                        <a class="mdl-navigation__link" href="">Link</a>
+                        <a class="mdl-navigation__link" href="">Link</a>
+                    </nav>
+                </div>
+                {% if user.is_authenticated %}
+                    <p>你已登录，欢迎你：<a href="{% url 'underlord:update_user' %}" style="text-decoration: none">{{ user.username }}</a></p>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                            onclick="location.href='{% url "logout" %}?next={{ request.path }}'"
+                            style="background-color: #1b9dec">注销登陆</button>
+                {% else %}
+                    <p>你还没有登录，请
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                onclick="location.href='{% url "login" %}?next={{ request.path }}'">登录</button>
+                        或者
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                onclick="location.href='{% url "underlord:register" %}'">注册</button>
+                    </p>
+                {% endif %}
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Title</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            <div class="page-content"><!-- Your content goes here --></div>
+        </main>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <footer class="mdl-mega-footer" style="position: relative; margin-bottom: 0;" id="footer">
+        <div class="mdl-mega-footer__middle-section">
+
+            <div class="mdl-mega-footer__drop-down-section">
+                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                <h1 class="mdl-mega-footer__heading">Features</h1>
+                <ul class="mdl-mega-footer__link-list">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Updates</a></li>
+                </ul>
+            </div>
+
+            <div class="mdl-mega-footer__drop-down-section">
+                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                <h1 class="mdl-mega-footer__heading">Details</h1>
+                <ul class="mdl-mega-footer__link-list">
+                    <li><a href="#">Specs</a></li>
+                    <li><a href="#">Tools</a></li>
+                    <li><a href="#">Resources</a></li>
+                </ul>
+            </div>
+
+            <div class="mdl-mega-footer__drop-down-section">
+                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                <h1 class="mdl-mega-footer__heading">Technology</h1>
+                <ul class="mdl-mega-footer__link-list">
+                    <li><a href="#">How it works</a></li>
+                    <li><a href="#">Patterns</a></li>
+                    <li><a href="#">Usage</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Contracts</a></li>
+                </ul>
+            </div>
+
+            <div class="mdl-mega-footer__drop-down-section">
+                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                <h1 class="mdl-mega-footer__heading">FAQ</h1>
+                <ul class="mdl-mega-footer__link-list">
+                    <li><a href="#">Questions</a></li>
+                    <li><a href="#">Answers</a></li>
+                    <li><a href="#">Contact us</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="mdl-mega-footer__bottom-section">
+            <div class="mdl-logo">Title</div>
+            <ul class="mdl-mega-footer__link-list">
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Privacy & Terms</a></li>
+            </ul>
+        </div>
+
+    </footer>
+
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+    {% block script_content %}{% endblock %}
 </body>
 </html>

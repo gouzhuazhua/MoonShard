@@ -7,8 +7,11 @@
         <button class="btn btn-default"><a href="{% url 'rubick:new_topic' %}">新建主题</a></button>
         {% for topic in all_topics %}
             <div>
-                <h5><a href="">{{ topic.title }}</a></h5>
+                <h5><a href="{% url 'rubick:get_topic_detail' %}?topic_id={{ topic.topic_id }}">{{ topic.title }}</a></h5>
                 <p>{{ topic.starter }}  {{ topic.created_at }}</p>
+                {% for tag in topic.tags %}
+                    <span style="background-color: {{ tag.color }};">{{ tag.tag }}</span>
+                {% endfor %}
             </div>
 {#            {% autoescape off %}#}
 {#                {{ topic.subject }}#}
