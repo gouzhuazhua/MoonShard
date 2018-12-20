@@ -1,0 +1,45 @@
+body{
+    min-height:100%;
+    position:absolute;
+    /*font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;*/
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+
+}
+
+#search-input-div{
+    position: relative;
+}
+
+#search-input-div .mdl-textfield__input{
+    border-radius:2px;
+    background-color: #3f4448;
+    width: 300px;
+    padding-left: 5px;
+}
+
+.icon-search{
+    background: url("../icon/moonshard.ico") no-repeat;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 25px;
+    left: 280px;
+}
+
+.page-content{
+    padding-bottom: 300px; /*需要 >= footer的height值*/
+}
+
+#header{
+    background-color: #24292e;
+}
+
+#footer{
+    /*position:absolute;*/
+    bottom:0;
+    /*width: 100%;*/
+}
