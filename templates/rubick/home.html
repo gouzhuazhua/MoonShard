@@ -4,7 +4,7 @@
 
 {% block content %}
     <div style="text-align: center">
-        <button class="btn btn-default"><a href="{% url 'rubick:new_topic' %}">新建主题</a></button>
+{#        <button class="btn btn-default"><a href="{% url 'rubick:new_topic' %}">新建主题</a></button>#}
         {% for topic in all_topics %}
             <div>
                 <h5><a href="{% url 'rubick:get_topic_detail' %}?topic_id={{ topic.topic_id }}">{{ topic.title }}</a></h5>
@@ -17,5 +17,36 @@
 {#                {{ topic.subject }}#}
 {#            {% endautoescape %}#}
         {% endfor %}
+    </div>
+
+
+
+    <div class="page-content-main">
+        <div class="left-sidebar">
+            <ul class="mdl-list">
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        Bryan Cranston
+                    </span>
+                </li>
+                <hr />
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        Aaron Paul
+                    </span>
+                </li>
+                <hr />
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        Bob Odenkirk
+                    </span>
+                </li>
+                <hr />
+            </ul>
+        </div>
+        <div class="contents">
+            <div class="contents-head"></div>
+            <div class="contents-content"></div>
+        </div>
     </div>
 {% endblock %}

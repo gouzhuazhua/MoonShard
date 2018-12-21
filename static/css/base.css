@@ -6,8 +6,21 @@ body{
 
 a{
     text-decoration: none;
-    color: #fff;
+}
 
+#header{
+    background-color: #24292e;
+}
+
+/*header*/
+#head-navigation a{
+    color: #fff;
+    font-weight: bold;
+}
+
+.mdl-layout__header-row .mdl-navigation__link{
+    padding-left: 30px;
+    padding-right: 0;
 }
 
 #search-input-div{
@@ -17,25 +30,40 @@ a{
 #search-input-div .mdl-textfield__input{
     border-radius:2px;
     background-color: #3f4448;
-    width: 300px;
+    width: 295px;
+    height: 20px;
     padding-left: 5px;
+    font-size: 14px;
 }
 
 .icon-search{
-    background: url("../icon/moonshard.ico") no-repeat;
-    width: 20px;
-    height: 20px;
+    background: url("../img/search-icon.png") no-repeat;
+    width: 16px;
+    height: 16px;
     position: absolute;
-    top: 25px;
-    left: 280px;
+    top: 27px;
+    left: 278px;
 }
 
+.head-register-login > a{
+    color: #fff;
+    font-weight: bold;
+    padding-left: 20px;
+}
+
+#head-msg{
+    padding-right: 20px;
+}
+
+#head-msg > span > a{
+    color: #fff;
+}
+
+/*end header*/
+
+/*footer*/
 .page-content{
     padding-bottom: 300px; /*需要 >= footer的height值*/
-}
-
-#header{
-    background-color: #24292e;
 }
 
 #footer{
@@ -43,3 +71,71 @@ a{
     bottom:0;
     /*width: 100%;*/
 }
+
+/*index css*/
+.demo-card-wide.mdl-card {
+    width: 512px;
+}
+/*.demo-card-wide > .mdl-card__title {*/
+    /*color: #fff;*/
+    /*height: 176px;*/
+    /*background: url('../assets/demos/welcome_card.jpg') center / cover;*/
+/*}*/
+.demo-card-wide > .mdl-card__menu {
+    color: #fff;
+}
+
+.index-content{
+    /*margin-left: 5%;*/
+    display: flex;
+    flex-wrap: wrap;
+
+}
+#index-card-1{
+    position:relative;
+    margin-top: 4%;
+    margin-left: 8%;
+}
+
+#index-card-1 > .mdl-card__title{
+    color: #fff;
+    height: 176px;
+    background: url('../img/learning-card.jpg') center / cover;
+}
+
+#index-card-2{
+    position:relative;
+    margin-top: 4%;
+    margin-left: 8%;
+}
+
+#index-card-2 > .mdl-card__title{
+    color: #fff;
+    height: 176px;
+    background: url('../img/life-card.jpg') center / cover;
+}
+
+#index-card-3{
+    position:relative;
+    margin-top: 4%;
+    margin-left: 8%;
+}
+
+#index-card-3 > .mdl-card__title{
+    color: #fff;
+    height: 176px;
+    background: url('../img/feeling-card.jpg') center / cover;
+}
+
+#index-card-4{
+    position:relative;
+    margin-top: 4%;
+    margin-left: 8%;
+}
+
+#index-card-4 > .mdl-card__title{
+    color: #fff;
+    height: 176px;
+    background: url('../img/market-card.jpg') center / cover;
+}
+/*end index css*/

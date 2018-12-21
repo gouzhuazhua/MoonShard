@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rubick.css' %}">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     {% block media_link %} {% endblock %}
 </head>
@@ -15,28 +16,9 @@
     <div class="mdl-layout mdl-js-layout">
         <header class="mdl-layout__header mdl-layout__header--scroll" id="header">
             <!-- Top row, always visible -->
-            <div class="mdl-layout__header-row">
+            <div class="mdl-layout__header-row" id="layout-head">
                 <!-- Title -->
                 <span class="mdl-layout-title"><a href="{% url 'index' %}">MoonShard</a></span>
-{#                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">#}
-{#                    <label class="mdl-button mdl-js-button mdl-button--icon" for="waterfall-exp">#}
-{#                        <i class="material-icons">search</i>#}
-{#                    </label>#}
-{#                    <div class="mdl-textfield__expandable-holder">#}
-{#                        <input class="mdl-textfield__input" type="text" name="sample"#}
-{#                        id="waterfall-exp" placeholder="你想找什么？">#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">#}
-{##}
-{#                    <div class="mdl-textfield__expandable-holder">#}
-{#                        <input class="mdl-textfield__input" type="text" name="sample"#}
-{#                        id="waterfall-exp" placeholder="你想找什么？" style="border-radius:2px; background-color: #3f4448;">#}
-{#                    </div>#}
-{#                    <label class="mdl-button mdl-js-button mdl-button--icon" for="waterfall-exp">#}
-{#                        <i class="material-icons">search</i>#}
-{#                    </label>#}
-{#                </div>#}
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right" 
                      style="margin-left: 20px; " id="search-input-div">
                     <input class="mdl-textfield__input" type="text" name="sample"
@@ -45,30 +27,36 @@
 
                 </div>
 
-                <div class="mdl-layout-spacer"></div>
+
                 <!-- Navigation -->
-                <nav class="mdl-navigation">
+                <nav class="mdl-navigation" id="head-navigation">
                     <a class="mdl-navigation__link" href="{% url 'rubick:home' %}">学习</a>
                     <a class="mdl-navigation__link" href="">生活</a>
                     <a class="mdl-navigation__link" href="">感情</a>
                     <a class="mdl-navigation__link" href="">市场</a>
                 </nav>
-
+                <div class="mdl-layout-spacer"></div>
 
 
                 {% if user.is_authenticated %}
-                    <span>你已登录，欢迎你：<a href="{% url 'underlord:update_user' %}" style="text-decoration: none">{{ user.username }}</a>
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                            onclick="location.href='{% url "logout" %}?next={{ request.path }}'"
-                            style="background-color: #1b9dec">注销登陆</button>
-                    </span>
+                    <div id="head-msg">
+                        <span class="mdl-badge" data-badge="4"><a href="#">消息</a></span>
+                    </div>
+
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn1">
+                        <img src="{% static 'avatar/me.jpg' %}" style="height: 40px; width: 40px;">
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
+                        <li class="mdl-menu__item" disabled>以<b>{{ user.username }}</b>登录</li>
+{#                        <li class="mdl-menu__item" disabled></li>#}
+                        <hr/>
+                        <li class="mdl-menu__item"><a href="#">个人资料</a></li>
+                        <li class="mdl-menu__item"><a href="#">我的帖子</a></li>
+                    </ul>
                 {% else %}
-                    <span>你还没有登录，请
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                                onclick="location.href='{% url "login" %}?next={{ request.path }}'">登录</button>
-                        或者
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-                                onclick="location.href='{% url "underlord:register" %}'">注册</button>
+                    <span class="head-register-login">
+                        <a href="{% url "login" %}?next={{ request.path }}">登录</a>
+                        <a href="{% url "underlord:register" %}?next={{ request.path }}">注册</a>
                     </span>
                 {% endif %}
 
