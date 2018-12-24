@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/rubick.css' %}">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-accordion-menu.css' %}">
     {% block media_link %} {% endblock %}
 </head>
 <body>
@@ -144,6 +145,8 @@
         src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
+    <script src="{% static 'js/jquery-accordion-menu.js' %}"></script>
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     {% block script_content %}{% endblock %}
 </body>
 </html>

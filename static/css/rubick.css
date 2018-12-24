@@ -1,5 +1,12 @@
+.page-content-main{
+    padding-left: 10%;
+}
+
 .left-sidebar{
-    padding-left: 100px;
-    width: 150px;
-    border-right: 1px solid #ccc;
+    width: 10%;
+    border: 1px solid #ccc;
+}
+
+.sidebar-list{
+    /*height: 10%;*/
 }
