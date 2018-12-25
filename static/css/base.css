@@ -62,9 +62,9 @@ a{
 /*end header*/
 
 /*footer*/
-.page-content{
-    padding-bottom: 300px; /*需要 >= footer的height值*/
-}
+/*.page-content{*/
+    /*padding-bottom: 300px; !*需要 >= footer的height值*!*/
+/*}*/
 
 #footer{
     /*position:absolute;*/

@@ -1,12 +1,143 @@
 .page-content-main{
-    padding-left: 10%;
+    width: 80%;
+    padding-left: 2%;
+    display: flex;
+    flex-direction: row;
 }
 
 .left-sidebar{
-    width: 10%;
-    border: 1px solid #ccc;
+    width: 16%;
+    border-right: 1px solid rgb(204, 204, 204);
 }
 
-.sidebar-list{
-    /*height: 10%;*/
+.contents{
+    /*padding-left: 20px;*/
+    width: 70%;
+    display: flex;
+    flex-direction: column;
 }
+
+.contents-head{
+    width: 100%;
+    border-bottom: 1px solid #eff0f1;
+}
+.contents-head-circle{
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.head-title{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*单个主题样式*/
+.topic-summary{
+    width: 100%;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #eff0f1;
+}
+.stats-container{
+    padding-left: 20px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+}
+.likes-stats-circle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}
+.answered-stats{
+    border: 1px solid rgb(204, 204, 204);
+    border-radius:3px;
+}
+.answered-stats-circle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}
+.view-stats-circle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+}
+
+.summary{
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.summary-title-content{
+    font-size: 20px;
+    color: #1b9dec;
+    margin: 0;
+}
+.excerpt{
+    padding-top: 15px;
+}
+.summary-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.tags{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.tags-content{
+    margin-right: 10px;
+}
+.tag{
+
+    font-size: 12px;
+    border-radius:3px;
+    background-color: #1b9dec;
+
+}
+.tag-bg{
+    padding: 2px;
+}
+.tag-bg > a{
+    color: #ffffff;
+}
+
+.author-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.author-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.avatar-img{
+    height: 40px;
+    width: 40px;
+}
+.author-msg{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+/*单个主题样式结束*/
+
+
+/*.sidebar-list{*/
+    /*!*height: 10%;*!*/
+/*}*/
