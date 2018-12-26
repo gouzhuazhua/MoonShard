@@ -7,71 +7,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+{#    <link rel="stylesheet" href="{% static 'css/nprogress.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/rubick.css' %}">
-    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-    <link rel="stylesheet" href="{% static 'css/jquery-accordion-menu.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base-board.css' %}">
     {% block media_link %} {% endblock %}
+    <title>{% block title %}title{% endblock %}</title>
 </head>
 <body>
     <div class="mdl-layout mdl-js-layout">
         <header class="mdl-layout__header mdl-layout__header--scroll" id="header">
-            <!-- Top row, always visible -->
-            <div class="mdl-layout__header-row" id="layout-head">
-                <!-- Title -->
-                <span class="mdl-layout-title"><a href="{% url 'index' %}">MoonShard</a></span>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right" 
-                     style="margin-left: 20px; " id="search-input-div">
-                    <input class="mdl-textfield__input" type="text" name="sample"
-                    id="waterfall-exp" placeholder="你想要找什么？">
-                    <i class="icon-search"></i>
-
-                </div>
-
-
-                <!-- Navigation -->
-                <nav class="mdl-navigation" id="head-navigation">
-                    <a class="mdl-navigation__link" href="{% url 'rubick:home' %}">学习</a>
-                    <a class="mdl-navigation__link" href="">生活</a>
-                    <a class="mdl-navigation__link" href="">感情</a>
-                    <a class="mdl-navigation__link" href="">市场</a>
-                </nav>
-                <div class="mdl-layout-spacer"></div>
-
-
-                {% if user.is_authenticated %}
-                    <div id="head-msg">
-                        <span class="mdl-badge" data-badge="4"><a href="#">消息</a></span>
-                    </div>
-
-                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn1">
-                        <img src="{% static 'avatar/me.jpg' %}" style="height: 40px; width: 40px;">
-                    </button>
-                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
-                        <li class="mdl-menu__item" disabled>以<b>{{ user.username }}</b>登录</li>
-{#                        <li class="mdl-menu__item" disabled></li>#}
-                        <hr/>
-                        <li class="mdl-menu__item"><a href="#">个人资料</a></li>
-                        <li class="mdl-menu__item"><a href="#">我的帖子</a></li>
-                    </ul>
-                {% else %}
-                    <span class="head-register-login">
-                        <a href="{% url "login" %}?next={{ request.path }}">登录</a>
-                        <a href="{% url "underlord:register" %}?next={{ request.path }}">注册</a>
-                    </span>
-                {% endif %}
+        <!-- Top row, always visible -->
+        <div class="mdl-layout__header-row" id="layout-head">
+            <!-- Title -->
+            <span class="mdl-layout-title"><a href="{% url 'index' %}">MoonShard</a></span>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"
+                 style="margin-left: 20px; " id="search-input-div">
+                <input class="mdl-textfield__input" type="text" name="sample"
+                id="waterfall-exp" placeholder="你想要找什么？">
+                <i class="icon-search"></i>
 
             </div>
-        </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">MoonShard</span>
-            <nav class="mdl-navigation">
+
+
+            <!-- Navigation -->
+            <nav class="mdl-navigation" id="head-navigation">
                 <a class="mdl-navigation__link" href="{% url 'rubick:home' %}">学习</a>
                 <a class="mdl-navigation__link" href="">生活</a>
                 <a class="mdl-navigation__link" href="">感情</a>
                 <a class="mdl-navigation__link" href="">市场</a>
             </nav>
+            <div class="mdl-layout-spacer"></div>
+
+
+            {% if user.is_authenticated %}
+                <div id="head-msg">
+                    <span class="mdl-badge" data-badge="4"><a href="#">消息</a></span>
+                </div>
+
+                <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn1">
+                    <img src="{% static 'avatar/me.jpg' %}" style="height: 40px; width: 40px;">
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
+                    <li class="mdl-menu__item" disabled>以<b>{{ user.username }}</b>登录</li>
+{#                        <li class="mdl-menu__item" disabled></li>#}
+                    <hr/>
+                    <li class="mdl-menu__item"><a href="#">个人资料</a></li>
+                    <li class="mdl-menu__item"><a href="#">我的帖子</a></li>
+                </ul>
+            {% else %}
+                <span class="head-register-login">
+                    <a href="{% url "login" %}?next={{ request.path }}">登录</a>
+                    <a href="{% url "underlord:register" %}?next={{ request.path }}">注册</a>
+                </span>
+            {% endif %}
+
         </div>
+    </header>
+        <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">MoonShard</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="{% url 'rubick:home' %}">学习</a>
+            <a class="mdl-navigation__link" href="">生活</a>
+            <a class="mdl-navigation__link" href="">感情</a>
+            <a class="mdl-navigation__link" href="">市场</a>
+        </nav>
+    </div>
+
         <main class="mdl-layout__content">
             <div class="page-content"><!-- Your content goes here -->
                 {% block content %}{% endblock %}
@@ -145,8 +147,9 @@
         src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
-    <script src="{% static 'js/jquery-accordion-menu.js' %}"></script>
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
     {% block script_content %}{% endblock %}
 </body>
 </html>

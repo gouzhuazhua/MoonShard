@@ -4,9 +4,19 @@ body{
     /*font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;*/
 }
 
+#nprogress .bar{
+    background: #6699FF;
+}
+
 a{
+    color: #6699FF;
     text-decoration: none;
 }
+a:hover{
+    color: #66CCFF;
+}
+
+
 
 #header{
     background-color: #24292e;

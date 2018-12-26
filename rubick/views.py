@@ -35,7 +35,7 @@ class ToHome(ListView):
                 for i in range(0, len(topics)):
                     topic_detail = {'topic_id': topics[i].topic_id,
                                     'title': topics[i].title,
-                                    'subject': topics[i].subject,
+                                    'subject': str(topics[i].subject[:50]) + '...',
                                     'like': topics[i].like,
                                     'views': topics[i].views,
                                     'created_at': topics[i].created_at,
