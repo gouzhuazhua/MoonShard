@@ -5,11 +5,11 @@ body{
 }
 
 #nprogress .bar{
-    background: #6699FF;
+    background: #0366d6;
 }
 
 a{
-    color: #6699FF;
+    color: #0366d6;
     text-decoration: none;
 }
 a:hover{

@@ -9,6 +9,9 @@
     border-right: 1px solid rgb(204, 204, 204);
     /*box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);*/
 }
+.left-sidebar-content > li{
+    background-color: #45A163;
+}
 .contents{
     /*padding-left: 20px;*/
     width: 70%;
@@ -33,10 +36,11 @@
     align-items: center;
 }
 #btn_new_topic{
-    background: #6699FF;
+    background: #0366d6;
+    color: #ffffff;
 }
 .span_topic_num{
-    color: #6699FF;
+    color: #0366d6;
 }
 
 /*单个主题样式*/
@@ -48,8 +52,9 @@
     border-bottom: 1px solid #eff0f1;
 }
 .stats-container{
+    font-size: 12px;
     padding-left: 20px;
-    width: 100px;
+    width: 65px;
     display: flex;
     flex-direction: column;
 }
@@ -61,7 +66,7 @@
     margin: 5px;
 }
 .answered-stats{
-    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid #45A163;
     border-radius:3px;
 }
 .answered-stats-circle{
@@ -70,6 +75,7 @@
     justify-content: center;
     align-items: center;
     margin: 5px;
+    color: #45A163;
 }
 .view-stats-circle{
     display: flex;
@@ -86,7 +92,7 @@
     justify-content: flex-start;
 }
 .summary-title-content{
-    font-size: 20px;
+    font-size: 16px;
     color: #1b9dec;
     margin: 0;
 }
@@ -109,8 +115,7 @@
 .tag{
     font-size: 12px;
     border-radius:3px;
-    /*background-color: #1b9dec;*/
-    box-shadow: 7px 7px 5px #888888;
+    /*box-shadow: 7px 7px 5px #888888;*/
 
 }
 .tag-bg{
@@ -130,14 +135,24 @@
     flex-direction: row;
     justify-content: flex-start;
 }
+.author-avatar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .avatar-img{
-    height: 40px;
-    width: 40px;
+    /*margin-top: 5px;*/
+    height: 32px;
+    width: 32px;
 }
 .author-msg{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    font-size: 12px;
+}
+.created-time{
+    font-size: 12px;
 }
 /*单个主题样式结束*/
 

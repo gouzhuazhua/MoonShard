@@ -1,3 +1,70 @@
 {% extends 'base_board.html' %}
 
 {% block title %}开始学习{% endblock %}
+
+{% block board_title %}开始学习{% endblock %}
+
+{% block new_topic_url %}{% url 'rubick:new_topic' %}{% endblock %}
+
+{% block topic_num %}1140{% endblock %}
+
+{% block topic-summary %}
+    {% for topic in all_topics %}
+        <div class="topic-summary">
+            <div class="stats-container">
+                <div class="like-stats">
+                    <div class="likes-stats-circle">
+                        <span class="likes"><strong>{{ topic.like }}</strong></span>
+                        <div class="viewcount">喜欢</div>
+                    </div>
+                </div>
+                <div class="answered-stats">
+                    <div class="answered-stats-circle">
+                        <span class="answers"><strong>0</strong></span>
+                        <div class="viewcount">回答</div>
+                    </div>
+                </div>
+                <div class="view-stats">
+                    <div class="view-stats-circle">
+                        <span class="views"><strong>{{ topic.views }}</strong></span>浏览
+                    </div>
+                </div>
+            </div>
+            <div class="summary">
+                <div class="summary-title">
+                    <h5 class="summary-title-content">
+                        <a href="{% url 'rubick:get_topic_detail' %}?topic_id={{ topic.topic_id }}">{{ topic.title }}</a>
+                    </h5>
+                </div>
+                <div class="excerpt">
+                    <p>{{ topic.subject }}</p>
+                </div>
+                <div class="summary-info">
+                    <div class="tags">
+                        {% for tag in topic.tags %}
+                            <div class="tags-content">
+                                <div class="tag" style="background-color: {{ tag.color }}">
+                                    <div class="tag-bg">
+                                        <a href="#">{{ tag.tag }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="author-info">
+                        <div class="author-content">
+                            <div class="author-avatar">
+                                <img class="avatar-img" src="http://120.79.209.94:9000/static/background.png">
+                            </div>
+                            <div class="author-msg">
+                                <div class="author-name"><a href="#">{{ topic.starter }}</a></div>
+                                <div class="author-answers">1024</div>
+                            </div>
+                        </div>
+                        <div class="created-time">{{ topic.created_at }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
