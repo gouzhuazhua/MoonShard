@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'reversion',
+    # pagination
+    'pure_pagination',
     # my apps
     'underlord',
     'rubick',
@@ -138,11 +140,18 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# 告诉Django用户登录成功/注销后如果contrib.auth.views.login视图（view）没有获取到next参数将会默认重定向到哪个URL
+
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 
-# 富文本编辑器ckeditor配置
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
+
+# ckeditor setting
 LANGUAGE_CODE = 'zh-hans'
 CKEDITOR_CONFIGS = {
     'default': {

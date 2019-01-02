@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from pure_pagination import Paginator, PageNotAnInteger
+from pure_pagination.mixins import PaginationMixin
 from .models import *
 from .forms import *
 from underlord.views import check_login
@@ -16,6 +18,11 @@ logging.basicConfig(level=logging.INFO,
 
 
 # Create your views here.
+class TopicListView(PaginationMixin, ListView):
+    paginate_by = 10
+    object = Topic
+
+
 class ToHome(ListView):
 
     def __init__(self):
@@ -31,7 +38,7 @@ class ToHome(ListView):
         self.data.clear()
         if request.method == 'GET':
             try:
-                topics = Topic.objects.all()[:20]
+                topics = Topic.objects.all()
                 for i in range(0, len(topics)):
                     topic_detail = {'topic_id': topics[i].topic_id,
                                     'title': topics[i].title,
@@ -53,7 +60,14 @@ class ToHome(ListView):
                         tags.append(tag_info)
                         topic_detail['tags'] = tags
                     self.home_topics.append(topic_detail)
-                return render(request, self.template_name, {'all_topics': self.home_topics,
+                # add pages
+                try:
+                    page = request.GET.get('page', 1)
+                except PageNotAnInteger:
+                    page = 1
+                paginator = Paginator(self.home_topics, per_page=5, request=request)
+                all_topics = paginator.page(page)
+                return render(request, self.template_name, {'all_topics': all_topics,
                                                             'data': self.data})
             except:
                 self.data['ERROR_CODE'] = 'CNF500'  # can not found object

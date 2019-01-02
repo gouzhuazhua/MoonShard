@@ -9,7 +9,7 @@
 {% block topic_num %}1140{% endblock %}
 
 {% block topic-summary %}
-    {% for topic in all_topics %}
+    {% for topic in all_topics.object_list  %}
         <div class="topic-summary">
             <div class="stats-container">
                 <div class="like-stats">
@@ -66,5 +66,29 @@
                 </div>
             </div>
         </div>
+        {{ all_topics.full_name | upper }}
     {% endfor %}
+    <div class="pagination">
+        {% if all_topics.has_previous %}
+            <a href="?{{ all_topics.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
+        {% else %}
+            <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
+        {% endif %}
+        {% for page in all_topics.pages %}
+            {% if page %}
+                {% ifequal page all_topics.number %}
+                    <span class="current page">{{ page }}</span>
+                {% else %}
+                    <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+                {% endifequal %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+        {% if all_topics.has_next %}
+            <a href="?{{ all_topics.next_page_number.querystring }}" class="next">{% trans "next" %} &rsaquo;&rsaquo;</a>
+        {% else %}
+            <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
+        {% endif %}
+    </div>
 {% endblock %}
