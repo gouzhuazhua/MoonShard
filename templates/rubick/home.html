@@ -69,26 +69,20 @@
         {{ all_topics.full_name | upper }}
     {% endfor %}
     <div class="pagination">
-        {% if all_topics.has_previous %}
-            <a href="?{{ all_topics.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
-        {% else %}
-            <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
-        {% endif %}
-        {% for page in all_topics.pages %}
-            {% if page %}
-                {% ifequal page all_topics.number %}
-                    <span class="current page">{{ page }}</span>
-                {% else %}
-                    <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
-                {% endifequal %}
-            {% else %}
-                ...
+        <span class="step-links">
+            {% if all_topics.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ all_topics.previous_page_number }}">previous</a>
             {% endif %}
-        {% endfor %}
-        {% if all_topics.has_next %}
-            <a href="?{{ all_topics.next_page_number.querystring }}" class="next">{% trans "next" %} &rsaquo;&rsaquo;</a>
-        {% else %}
-            <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
-        {% endif %}
+
+            <span class="current">
+                Page {{ all_topics.number }} of {{ all_topics.paginator.num_pages }}.
+            </span>
+
+            {% if all_topics.has_next %}
+                <a href="?page={{ all_topics.next_page_number }}">next</a>
+                <a href="?page={{ all_topics.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
     </div>
 {% endblock %}

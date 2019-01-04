@@ -33,3 +33,20 @@ class NewTopicForm(forms.Form):
     def clean_tags(self):
         tags = self.cleaned_data.get('tags')
         return tags
+
+
+class PostForm(forms.Form):
+    topic_id = forms.CharField(label='',
+                               widget=forms.TextInput(attrs={'id': 'topic_id', 'type': 'hidden'}),
+                               required=True)
+    post = RichTextFormField(label='',
+                             widget=forms.Textarea(attrs={'id': 'post', 'placeholder': '想说点什么吗？'}),
+                             required=True)
+
+    def clean_post(self):
+        post = self.cleaned_data.get('post')
+        return post
+
+    def clean_topic_id(self):
+        topic_id = self.cleaned_data.get('topic_id')
+        return topic_id

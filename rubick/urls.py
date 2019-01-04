@@ -13,4 +13,5 @@ urlpatterns = [
     path('newTopic/', views.new_topic, name='new_topic'),
     path('getTags/', views.get_tags, name='get_tags'),
     path('detailTopic/', views.get_topic_detail, name='get_topic_detail'),
+    path('postTopic/', views.post_topic, name='post_topic'),
 ]

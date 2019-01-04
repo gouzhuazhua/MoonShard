@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from pure_pagination import Paginator, PageNotAnInteger
-from pure_pagination.mixins import PaginationMixin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 from .forms import *
 from underlord.views import check_login
@@ -18,11 +17,6 @@ logging.basicConfig(level=logging.INFO,
 
 
 # Create your views here.
-class TopicListView(PaginationMixin, ListView):
-    paginate_by = 10
-    object = Topic
-
-
 class ToHome(ListView):
 
     def __init__(self):
@@ -61,12 +55,14 @@ class ToHome(ListView):
                         topic_detail['tags'] = tags
                     self.home_topics.append(topic_detail)
                 # add pages
+                paginator = Paginator(self.home_topics, 5)
+                page = request.GET.get('page')
                 try:
-                    page = request.GET.get('page', 1)
+                    all_topics = paginator.page(page)
                 except PageNotAnInteger:
-                    page = 1
-                paginator = Paginator(self.home_topics, per_page=5, request=request)
-                all_topics = paginator.page(page)
+                    all_topics = paginator.page(1)
+                except EmptyPage:
+                    all_topics = paginator.page(paginator.num_pages)
                 return render(request, self.template_name, {'all_topics': all_topics,
                                                             'data': self.data})
             except:
@@ -111,6 +107,42 @@ def new_topic(request):
     return render(request, 'rubick/new_topic.html', {'form': form, 'tags': tags})
 
 
+@check_login
+def post_topic(request):
+    data = {}
+    redirect_to = request.POST.get('next', request.GET.get('next', ''))
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            try:
+                message = form.cleaned_data['post']
+                topic_id = form.cleaned_data['topic_id']
+                topic = Topic.objects.filter(topic_id=topic_id).all()[0]
+                post_id = str(uuid.uuid3(uuid.NAMESPACE_DNS, message[:10])).replace('-', '')
+                username = request.user.username
+                created_by = User.objects.filter(username=username).all()[0]
+                updated_by = User.objects.filter(username=username).all()[0]
+                logging.info(topic_id)
+                Post.objects.create(post_id=post_id,
+                                    message=message,
+                                    topic=topic,
+                                    created_by=created_by,
+                                    updated_by=updated_by).save()
+                return render(request, 'rubick/detail_topic.html', {'form': form, 'next': redirect_to})
+            except:
+                data['ERROR_CODE'] = 'CNC500'  # can not create object
+                return render(request, '500.html', {'data': data})
+        else:
+            data['VALID_MSG'] = form.errors
+            data['ERROR_CODE'] = 'FNV500'  # form not valid
+            return render(request, '500.html', {'data': data})
+    else:
+
+        form = PostForm()
+
+    return render(request, 'rubick/detail_topic.html', {'form': form})
+
+
 @csrf_exempt
 def get_tags(request):
     if request.method == 'POST':
@@ -135,7 +167,8 @@ def get_topic_detail(request):
             _topic = Topic.objects.get(topic_id=topic_id)
             _topic.views = views
             _topic.save()
-            return render(request, 'rubick/detail_topic.html', {'topic': topic})
+            form = PostForm(initial={'topic_id': topic_id})
+            return render(request, 'rubick/detail_topic.html', {'topic': topic, 'form': form})
         except:
             data['ERROR_CODE'] = 'CNF500'  # can not found object
             return render(request, '500.html', {'data': data})

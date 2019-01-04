@@ -3,5 +3,6 @@
 {% block title %} 出错了！ {% endblock %}
 
 {% block content %}
-    <h3 style="color: red">{{ data.message }}</h3>
+    <h3 style="color: red">错误代码：{{ data.ERROR_CODE }}</h3>
+    <h3 style="color: red">表单验证：{{ data.VALID_MSG }}</h3>
 {% endblock %}

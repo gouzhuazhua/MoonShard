@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="page-content-main">
+        <div class="left-sidebar">
+            <div class="left-sidebar-content">
+                <ol>
+                    <li>
+                        <a href="#">
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span><strong>Moon Shard</strong></span>
+                        </a>
+                    </li>
+                    <ol>
+                        <li>标签</li>
+                        <li>用户</li>
+                    </ol>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="topic-contents">
+            <div class="topic-contents-head">
+                <div class="topic-contents-head-circle">
+                    <div class="topic-head-title">
+                        <h5><strong>{% block topic_title %}topic_title{% endblock %}</strong></h5>
+                        <button id="btn_new_topic" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
+                        onclick="window.location.href='{% block new_topic_url %}new_topic_url{% endblock %}'">
+                            新建主题
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="topic-detail">
+                <div class="topic-mainbar">
+                    <div class="topic-host">
+                        <div class="js-voting-container">
+                            <button class="js-vote-up-btn">yes</button>
+                            <div class="js-vote-count">36</div>
+                            <button class="js-vote-down-btn">no</button>
+                        </div>
+                        <div class="topic-subject">
+                            <p>
+                                {% block topic_subject %}{% endblock %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="topic-reply">
+                        {% block topic_reply %}{% endblock %}
+                    </div>
+                    <div class="post-box">
+                        <h3>你的回复</h3>
+                        <form class="form" action="{% url 'rubick:post_topic' %}" method="post">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            {% for field in form %}
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {{ field.errors }}
+                                {% if field.help_text %}
+                                    <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary btn-block">新建</button>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="topic-right-sidebar">
+                    <div class="topic-info">
+                        {% block topic_info %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

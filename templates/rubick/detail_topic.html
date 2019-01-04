@@ -1,23 +1,40 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block title %}{{ topic.title }}{% endblock %}#}
+{#{% block media_link %}{{ form.media }}{% endblock %}#}
+{#{% block content %}#}
+{#    <div class="flex-center">#}
+{#    <div class="container">#}
+{#        <div class="flex-center">#}
+{#            <div class="unit-1-2 unit-1-on-mobile">#}
+{#                <h3>{{ topic.title }}</h3>#}
+{#                <h5>{{ topic.starter }} created at {{ topic.created_at }}</h5>#}
+{#                {% autoescape off %}#}
+{#                    <p>{{ topic.subject }}</p>#}
+{#                {% endautoescape %}#}
+{#                <div class="flex-left top-gap text-small">#}
+{#                    <div class="unit-2-3"><span>没有账号？<a href="{% url 'underlord:register' %}">立即注册</a></span></div>#}
+{#                    <div class="unit-1-3 flex-right"><span><a href="../500.html">忘记密码？</a></span></div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#{% endblock %}#}
+
+{% extends 'base_topic.html' %}
 
 {% block title %}{{ topic.title }}{% endblock %}
+
 {% block media_link %}{{ form.media }}{% endblock %}
-{% block content %}
-    <div class="flex-center">
-    <div class="container">
-        <div class="flex-center">
-            <div class="unit-1-2 unit-1-on-mobile">
-                <h3>{{ topic.title }}</h3>
-                <h5>{{ topic.starter }} created at {{ topic.created_at }}</h5>
-                {% autoescape off %}
-                    <p>{{ topic.subject }}</p>
-                {% endautoescape %}
-                <div class="flex-left top-gap text-small">
-                    <div class="unit-2-3"><span>没有账号？<a href="{% url 'underlord:register' %}">立即注册</a></span></div>
-                    <div class="unit-1-3 flex-right"><span><a href="../500.html">忘记密码？</a></span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+{% block topic_title %}{{ topic.title }}{% endblock %}
+
+{% block new_topic_url %}{% url 'rubick:new_topic' %}{% endblock %}
+
+{% block topic_subject %}
+
+    {% autoescape off %}
+        {{ topic.subject }}
+    {% endautoescape %}
 {% endblock %}

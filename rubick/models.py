@@ -45,6 +45,17 @@ class Reply(models.Model):
         return self.message
 
 
+class Like(models.Model):
+    topic = models.ForeignKey(Topic, related_name='like_topic', on_delete=True, verbose_name='喜欢的帖子')
+    user = models.ForeignKey(User, related_name='like_user', on_delete=True, verbose_name='收藏者')
+
+
+class Vote(models.Model):
+    reply = models.ForeignKey(Reply, related_name='vote_reply', on_delete=True, verbose_name='投票对象贴')
+    user = models.ForeignKey(User, related_name='vote_user', on_delete=True, verbose_name='投票者')
+    vote_type = models.IntegerField(default=0, verbose_name='投票类型')
+
+
 class Tag(models.Model):
     title = models.CharField(max_length=20, verbose_name='标签名称', unique=True)
     color = models.CharField(max_length=7, verbose_name='标签颜色')
