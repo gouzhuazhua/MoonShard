@@ -12,15 +12,15 @@ from ckeditor.fields import RichTextFormField
 class NewTopicForm(forms.Form):
     title = forms.CharField(label='标题',
                             max_length=100,
-                            widget=forms.TextInput(attrs={'id': 'title', 'placeholder': '请输入主题标题'}),
+                            widget=forms.TextInput(attrs={'id': 'title',
+                                                          'placeholder': '请输入主题标题',
+                                                          'class': 'mdl-textfield__input'}),
                             error_messages={'required': '标题不能为空'})
     subject = RichTextFormField(label='内容',
                                 max_length=4000,
-                                widget=forms.Textarea(attrs={'id': 'subject', 'placeholder': '请在此输入内容'}),
+                                widget=forms.Textarea(attrs={'id': 'subject',
+                                                             'placeholder': '请在此输入内容'}),
                                 required=False)
-    tags = forms.CharField(label='标签',
-                           max_length=100,
-                           widget=forms.TextInput(attrs={'id': 'tags', 'placeholder': '请输入主题标签', 'oninput': 'get_tags()'}))
 
     def clean_title(self):
         title = self.cleaned_data.get('title')
@@ -30,9 +30,6 @@ class NewTopicForm(forms.Form):
         subject = self.cleaned_data.get('subject')
         return subject
 
-    def clean_tags(self):
-        tags = self.cleaned_data.get('tags')
-        return tags
 
 
 class PostForm(forms.Form):
@@ -40,7 +37,8 @@ class PostForm(forms.Form):
                                widget=forms.TextInput(attrs={'id': 'topic_id', 'type': 'hidden'}),
                                required=True)
     post = RichTextFormField(label='',
-                             widget=forms.Textarea(attrs={'id': 'post', 'placeholder': '想说点什么吗？'}),
+                             max_length=4000,
+                             widget=forms.Textarea(attrs={'id': 'post', 'placeholder': '请在此输入内容'}),
                              required=True)
 
     def clean_post(self):
@@ -50,3 +48,21 @@ class PostForm(forms.Form):
     def clean_topic_id(self):
         topic_id = self.cleaned_data.get('topic_id')
         return topic_id
+
+
+class ReplyForm(forms.Form):
+    post_id = forms.CharField(label='',
+                              widget=forms.TextInput(attrs={'id': 'post_id', 'type': ''}),
+                              required=True)
+    reply = RichTextFormField(label='',
+                              max_length=4000,
+                              widget=forms.Textarea(attrs={'id': 'reply', 'placeholder': '请在此输入内容'}),
+                              required=True)
+
+    def clean_reply(self):
+        reply = self.cleaned_data.get('reply')
+        return reply
+
+    def clean_post_id(self):
+        post_id = self.cleaned_data.get('post_id')
+        return post_id

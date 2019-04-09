@@ -6,26 +6,29 @@
     <div class="page-content-main">
         <div class="left-sidebar">
             <div class="left-sidebar-content">
-                <ol>
+                <ol style="line-height: 30px">
                     <li>
-                        <a href="#">
+                        <a href="{% url 'index' %}" class="li-index" style="padding-left: 5%">
                             <span>首页</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
+                    <li style="background-color: #f3f3f3;border-right: 3px solid #0366d6;height: 30px;">
+                        <a href="{% url 'rubick:home' %}" class="li-index" style="padding-left: 10%">
                             <span><strong>Moon Shard</strong></span>
                         </a>
                     </li>
                     <ol>
-                        <li>标签</li>
-                        <li>用户</li>
+                        <li>
+                            <a href="{% url 'underlord:to_all_tags' %}" class="li-tag">标签</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'underlord:to_all_users' %}" class="li-user">用户</a>
+                        </li>
+
                     </ol>
                 </ol>
             </div>
         </div>
-
-
         <div class="contents">
             <div class="contents-head">
                 <div class="contents-head-circle">

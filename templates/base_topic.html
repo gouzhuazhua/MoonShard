@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+
 {% block content %}
     <div class="page-content-main">
         <div class="left-sidebar">
             <div class="left-sidebar-content">
-                <ol>
+                <ol style="line-height: 30px">
                     <li>
-                        <a href="#">
+                        <a href="{% url 'index' %}" class="li-index" style="padding-left: 5%">
                             <span>首页</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
+                    <li style="background-color: #f3f3f3;border-right: 3px solid #0366d6;height: 30px;">
+                        <a href="{% url 'rubick:home' %}" class="li-index" style="padding-left: 10%">
                             <span><strong>Moon Shard</strong></span>
                         </a>
                     </li>
                     <ol>
-                        <li>标签</li>
-                        <li>用户</li>
+                        <li>
+                            <a href="{% url 'underlord:to_all_tags' %}" class="li-tag">标签</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'underlord:to_all_users' %}" class="li-user">用户</a>
+                        </li>
+
                     </ol>
+                </ol>
                 </ol>
             </div>
         </div>
@@ -28,7 +36,7 @@
             <div class="topic-contents-head">
                 <div class="topic-contents-head-circle">
                     <div class="topic-head-title">
-                        <h5><strong>{% block topic_title %}topic_title{% endblock %}</strong></h5>
+                        <h5 class="topic-title-h5"><strong>{% block topic_title %}topic_title{% endblock %}</strong></h5>
                         <button id="btn_new_topic" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"
                         onclick="window.location.href='{% block new_topic_url %}new_topic_url{% endblock %}'">
                             新建主题
@@ -40,37 +48,36 @@
 
             <div class="topic-detail">
                 <div class="topic-mainbar">
+{#                    主题主体#}
                     <div class="topic-host">
-                        <div class="js-voting-container">
-                            <button class="js-vote-up-btn">yes</button>
-                            <div class="js-vote-count">36</div>
-                            <button class="js-vote-down-btn">no</button>
-                        </div>
-                        <div class="topic-subject">
-                            <p>
+                        <div class="topic-host-1">
+                            <div class="js-voting-container-circle">
+                                <div class="js-voting-container">
+                                    <button id="topic-js-vote-up-btn" class="js-vote-up-btn mdl-button mdl-js-button">△</button>
+                                    <div id="js-vote-count" class="js-vote-count">{% block topic_vote_count %}0{% endblock %}</div>
+                                    <button id="topic-js-vote-down-btn" class="js-vote-down-btn mdl-button mdl-js-button">▽</button>
+                                </div>
+                            </div>
+                            <div class="topic-subject">
                                 {% block topic_subject %}{% endblock %}
-                            </p>
+                            </div>
+                        </div>
+                        <div class="topic-host-2">
+                            <div class="author-info">
+                                {% block topic_author %}{% endblock %}
+                            </div>
                         </div>
                     </div>
+
+{#                    主题所有回复#}
                     <div class="topic-reply">
                         {% block topic_reply %}{% endblock %}
                     </div>
+                    <div class="topic-pagination">
+                        {% block topic_pagination %}{% endblock %}
+                    </div>
                     <div class="post-box">
-                        <h3>你的回复</h3>
-                        <form class="form" action="{% url 'rubick:post_topic' %}" method="post">
-                            {% csrf_token %}
-                            {{ form.non_field_errors }}
-                            {% for field in form %}
-                                {{ field.label_tag }}
-                                {{ field }}
-                                {{ field.errors }}
-                                {% if field.help_text %}
-                                    <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
-                                {% endif %}
-                            {% endfor %}
-                            <button type="submit" class="btn btn-primary btn-block">新建</button>
-                            <input type="hidden" name="next" value="{{ next }}"/>
-                        </form>
+                        {% block post_box %}{% endblock %}
                     </div>
                 </div>
                 <div class="topic-right-sidebar">

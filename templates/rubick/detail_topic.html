@@ -1,28 +1,6 @@
-{#{% extends 'base.html' %}#}
-{##}
-{#{% block title %}{{ topic.title }}{% endblock %}#}
-{#{% block media_link %}{{ form.media }}{% endblock %}#}
-{#{% block content %}#}
-{#    <div class="flex-center">#}
-{#    <div class="container">#}
-{#        <div class="flex-center">#}
-{#            <div class="unit-1-2 unit-1-on-mobile">#}
-{#                <h3>{{ topic.title }}</h3>#}
-{#                <h5>{{ topic.starter }} created at {{ topic.created_at }}</h5>#}
-{#                {% autoescape off %}#}
-{#                    <p>{{ topic.subject }}</p>#}
-{#                {% endautoescape %}#}
-{#                <div class="flex-left top-gap text-small">#}
-{#                    <div class="unit-2-3"><span>没有账号？<a href="{% url 'underlord:register' %}">立即注册</a></span></div>#}
-{#                    <div class="unit-1-3 flex-right"><span><a href="../500.html">忘记密码？</a></span></div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
-{#{% endblock %}#}
-
 {% extends 'base_topic.html' %}
+
+{% load staticfiles %}
 
 {% block title %}{{ topic.title }}{% endblock %}
 
@@ -32,9 +10,382 @@
 
 {% block new_topic_url %}{% url 'rubick:new_topic' %}{% endblock %}
 
-{% block topic_subject %}
+{% block topic_vote_count %}{{ topic.like }}{% endblock %}
 
+{% block topic_subject %}
+    <br>
     {% autoescape off %}
         {{ topic.subject }}
     {% endautoescape %}
+    <br>
+    <div class="tags">
+        {% for tag in all_tags %}
+            <div class="tags-content">
+                <div class="tag" style="background-color: {{ tag.tag.color }}">
+                    <div class="tag-bg">
+                        <a href="{% url 'underlord:to_tag_topics' %}?tag_name={{ tag.tag.title }}&tag_board={{ tag.tag.board }}">{{ tag.tag.title }}</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block topic_author %}
+    <div class="author-content">
+        <div class="author-avatar">
+            <img class="avatar-img" src="{{ topic.starter.avatar.url }}">
+        </div>
+        <div class="author-msg">
+            <div class="author-name"><a href="#">{{ topic.starter }}</a></div>
+            <div class="author-answers"><span style="color: red">★</span>:{{ topic_starter_score }}</div>
+        </div>
+    </div>
+    <div class="created-time">{{ topic.created_at }}</div>
+{% endblock %}
+
+{% block topic_reply %}
+    {% for post in all_posts.object_list %}
+        <div class="single-post">
+            <div class="topic-post-1">
+                <div class="js-voting-container-circle">
+                    <div class="js-voting-container">
+                        <button class="js-vote-up-btn mdl-button mdl-js-button" onclick="do_reply_vote('{{ post.post_id }}', 0)">△</button>
+                        <div class="js-vote-count" id="js-vote-count-{{ post.post_id }}">{{ post.like }}</div>
+                        <button class="js-vote-down-btn mdl-button mdl-js-button" onclick="do_reply_vote('{{ post.post_id }}', 1)">▽</button>
+                    </div>
+                </div>
+                <div class="topic-post-all">
+                    {% autoescape off %}
+                        {{ post.message }}
+                    {% endautoescape %}
+                </div>
+            </div>
+            {% if post.created_by == request.user %}
+                <div class="topic-post-12">
+                    <div class="topic-post-delete">
+                        <a href="javascript:void(0);" onclick="do_delete_post('{{ post.post_id }}')">删除这条评论</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="topic-post-2">
+                <div class="author-info">
+                    <div class="author-content">
+                        <div class="author-avatar">
+                            <img class="avatar-img" src="{{ post.created_by.avatar.url }}">
+                        </div>
+                        <div class="author-msg">
+                            <div class="author-name"><a href="{% url 'underlord:userInfo' post.created_by %}">{{ post.created_by }}</a></div>
+                            <div class="author-answers">
+                                {% for aps in all_post_score %}
+                                    {% for key,value in aps.items %}
+                                        {% if key == post.created_by %}
+                                            <span style="color: red">★</span>:{{ value }}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="created-time">{{ post.created_at }}</div>
+                </div>
+            </div>
+            <div class="topic-post-3">
+                <div class="post-reply-main" id="post-reply-main-{{ post.post_id }}" style="padding-left: 110px">
+                    {% for post_replys in all_replys %}
+                        {% for post_reply in post_replys %}
+                            {% if post_reply.post.post_id == post.post_id %}
+                                <div class="post-reply-single">
+                                    <div class="post-reply-single-content">
+                                        <div style="float: left">
+                                            {% autoescape off %}
+                                                {{ post_reply.message }}
+                                            {% endautoescape %}
+                                        </div>
+                                        <div>
+                                            <p>-<a href="{% url 'underlord:userInfo'  post_reply.created_by %}">{{ post_reply.created_by }}</a>
+                                                <span style="color: #9199a1">{{ post_reply.created_at }}</span>
+                                                {% if post_reply.created_by == request.user %}
+                                                    <span style="color: #9199a1"><a href="javascript:void(0);" onclick="do_delete_reply('{{ post_reply.reply_id }}')">删除这条回复</a> </span>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                    {% endfor %}
+                    <div class="post-reply-single-btn">
+                        <a href="javascript:void(0);" onclick="get_reply_post_form('{{ post.post_id }}')">添加一条回复</a>
+                    </div><br>
+                    <div class="reply-box" id="reply-box-{{ post.post_id }}" style="display: none">
+{#                            <textarea name="editor-{{ post.post_id }}" id="editor-{{ post.post_id }}"></textarea>#}
+                        <div id="editor-{{ post.post_id }}">
+                            &lt;p&gt;Here goes the initial content of the editor.&lt;/p&gt;
+                        </div>
+                        <br>
+                        <button onclick="do_reply('{{ post.post_id }}')"
+                                id="demo-show-toast-reply"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                style="background-color: #009688 !important">提交你的回复</button>
+                    </div>
+                    <hr style="visibility: hidden">
+                </div>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+    <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+{% endblock %}
+
+{% block topic_pagination %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if all_posts.has_previous %}
+                <a class="mdl-button mdl-js-button mdl-button--accent" href="?page=1">&laquo; first</a>
+                <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ all_posts.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current mdl-button mdl-js-button mdl-button--primary">
+                Page {{ all_posts.number }} of {{ all_posts.paginator.num_pages }}.
+            </span>
+
+            {% if all_posts.has_next %}
+                <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ all_posts.next_page_number }}">next</a>
+                <a class="mdl-button mdl-js-button mdl-button--accent" href="?page={{ all_posts.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
+
+{% block post_box %}
+    <h5>你的回复:</h5>
+    <form class="form" action="{% url 'rubick:post_topic' %}?next={{ request.path }}" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-topic-post">
+            {{ form.topic_id }}
+            {{ form.post }}
+        </div>
+        <br>
+        <button type="submit" id="demo-show-toast" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="background-color: #009688 !important">提交你的回复</button>
+        <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+    </form>
+    <br>
+{% endblock %}
+
+{% block script_content %}
+    <script>
+        (function() {
+            'use strict';
+            var snackbarContainer = document.querySelector('#demo-toast-example');
+            var showToastButton = document.querySelector('#demo-show-toast');
+            showToastButton.addEventListener('click', function() {
+                'use strict';
+                var data = {message: '回复主题成功！ '};
+                snackbarContainer.MaterialSnackbar.showSnackbar(data);
+            });
+        }());
+
+        $(function () {
+            $("#topic-js-vote-up-btn").click(function () {
+                var topic_id = "{{ topic.topic_id }}";
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "rubick:do_vote" %}',
+                    data: {
+                        'topic_id': topic_id,
+                        'vote_type': 0,
+                        'vote_object': 'topic',
+                    },
+                    success:function (data) {
+                         'use strict';
+                        var snackbarContainer = document.querySelector('#demo-toast-example');
+                        'use strict';
+                        var msg_r = {message: '投票成功！ '};
+                        if(data == 500) {
+                            var msg_r = {message: '出错了，请稍后再试！错误代码：500！ '};
+                        }else if(data == 400) {
+                            var msg_r = {message: '出错了，请稍后再试！错误代码：400！ '};
+                        }else if(data == "201"){
+                            var msg_r = {message: '您已经投过赞成票！无法继续投票！ '};
+                        }else {
+                            $('#js-vote-count').html(data);
+                            var msg_r = {message: '投票成功 '};
+                        }
+                        snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    }
+                });
+            });
+        });
+
+        $(function () {
+            $("#topic-js-vote-down-btn").click(function () {
+                var topic_id = "{{ topic.topic_id }}";
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "rubick:do_vote" %}',
+                    data: {
+                        'topic_id': topic_id,
+                        'vote_type': 1,
+                        'vote_object': 'topic',
+                    },
+                    success:function (data) {
+                         'use strict';
+                        var snackbarContainer = document.querySelector('#demo-toast-example');
+                        'use strict';
+                        var msg_r = {message: '投票成功！ '};
+                        if(data == 500) {
+                            var msg_r = {message: '出错了，请稍后再试！错误代码：500！ '};
+                        }else if(data == 400) {
+                            var msg_r = {message: '出错了，请稍后再试！错误代码：400！ '};
+                        }else if(data == "202"){
+                            var msg_r = {message: '您已经投过反对票！无法继续投票！ '};
+                        } else {
+                            $('#js-vote-count').html(data);
+                            var msg_r = {message: '投票成功 '};
+                        }
+                        snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    }
+                });
+            });
+        });
+
+        function do_reply_vote(post_id, vote_type) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "rubick:do_vote" %}',
+                data: {
+                    'post_id': post_id,
+                    'vote_type': vote_type,
+                    'vote_object': 'post',
+                },
+                success:function (data) {
+                    'use strict';
+                    var snackbarContainer = document.querySelector('#demo-toast-example');
+                    'use strict';
+                    var msg_r = {message: '投票成功！ '};
+                    if(data == 500) {
+                            var msg_r = {message: '出错了，请稍后再试！错误代码：500！ '};
+                        }else if(data == 400) {
+                            var msg_r = {message: '出错了，请稍后再试！错误代码：400！ '};
+                        }else if(data == "201"){
+                            var msg_r = {message: '您已经投过赞成票！无法继续投票！ '};
+                        }else if(data == "202"){
+                            var msg_r = {message: '您已经投过反对票！无法继续投票！ '};
+                        } else {
+                            $('#js-vote-count-'+post_id).html(data);
+                            var msg_r = {message: '投票成功 '};
+                        }
+                        snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                }
+            });
+        }
+
+        var my_editor = '';
+        function get_reply_post_form(post_id) {
+            ClassicEditor
+            .create( document.querySelector( '#editor-'+post_id ),  )
+            .then( editor => {
+                console.log( editor );
+                my_editor = editor;
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+            $('#reply-box-' + post_id).show();
+        }
+        function do_reply(post_id) {
+            console.info(my_editor.getData() + '\n' + post_id);
+            var reply = my_editor.getData();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "rubick:do_reply" %}',
+                data: {
+                  'post_id': post_id,
+                  'reply': reply,
+                },
+                success:function (data) {
+                    'use strict';
+                    var snackbarContainer = document.querySelector('#demo-toast-example');
+                    'use strict';
+                    var msg_r = {message: '回复评论成功！ '};
+                    if(data == 500) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：500！ '};
+                    }else if(data == 400) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：400！ '};
+                    }else {
+                        $('#reply-box-' + post_id).hide();
+                        var msg_r = {message: '回复评论成功，即将刷新页面！ '};
+                    }
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    setTimeout("refresh()", 3000);
+
+                }
+            });
+        }
+        function do_delete_post(post_id) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "rubick:do_delete_post" %}',
+                data: {
+                    'post_id': post_id,
+                },
+                success:function (data) {
+                    'use strict';
+                    var snackbarContainer = document.querySelector('#demo-toast-example');
+                    'use strict';
+                    var msg_r = {message: '删除评论成功！ '};
+                    if(data == 500) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：500！ '};
+                    }else if(data == 400) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：400！ '};
+                    }else {
+                        var msg_r = {message: '删除评论成功，即将刷新页面！ '};
+                    }
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    setTimeout("refresh()", 3000);
+
+                }
+            });
+        }
+        function do_delete_reply(reply_id) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "rubick:do_delete_reply" %}',
+                data: {
+                    'reply_id': reply_id,
+                },
+                success:function (data) {
+                    'use strict';
+                    var snackbarContainer = document.querySelector('#demo-toast-example');
+                    'use strict';
+                    var msg_r = {message: '删除回复成功！ '};
+                    if(data == 500) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：500！ '};
+                    }else if(data == 400) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：400！ '};
+                    }else {
+                        var msg_r = {message: '删除回复成功，即将刷新页面！ '};
+                    }
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    setTimeout("refresh()", 3000);
+
+                }
+            });
+        }
+
+        function refresh() {
+            window.location.reload();
+        }
+    </script>
 {% endblock %}

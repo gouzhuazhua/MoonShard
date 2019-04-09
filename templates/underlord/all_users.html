@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}所有用户{% endblock %}
+
+{% block content %}
+    <div class="page-content-main">
+        <div class="left-sidebar">
+            <div class="left-sidebar-content">
+                <ol style="line-height: 30px">
+                    <li>
+                        <a href="{% url 'index' %}" class="li-index" style="padding-left: 5%">
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="{% url 'rubick:home' %}" class="li-index" style="padding-left: 10%">
+                            <span><strong>Moon Shard</strong></span>
+                        </a>
+                    </li>
+                    <ol>
+                        <li>
+                            <a href="{% url 'underlord:to_all_tags' %}" class="li-tag">标签</a>
+                        </li>
+                        <li style="background-color: #f3f3f3;border-right: 3px solid #0366d6;height: 30px;padding-left: 10px; line-height: 30px">
+                            <a href="{% url 'underlord:to_all_users' %}" class="li-user">用户</a>
+                        </li>
+
+                    </ol>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="user-info-contents">
+            <div class="user-info-contents-head">
+                <div class="user-info-contents-head-circle">
+                    <div class="user-info-contents-head-title">
+                        <h5><strong>所有用户</strong></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info-contents-body">
+                <div class="user-info-contents-body-top">
+                    <div class="user-follow-circel">
+{#                        所有用户#}
+                        {% for user in paginator_users_page.object_list %}
+                            <div class="all-user-main-circle" >
+                                <div class="all-user-main" >
+                                    <div class="all-user-main-avatar"><img src="{{ user.info.avatar.url }}" style="width: 50px;height: 50px"></div>
+                                    <div class="all-user-main-detail">
+                                        <div class="all-user-main-detail-username"><a href="{% url 'underlord:userInfo' user.info.username %}">{{ user.info.username }}</a></div>
+                                        <div class="all-user-main-detail-score"><strong><span style="color: red">★</span>:{{ user.score }}</strong></div>
+                                        <div class="all-user-main-detail-tags">
+                                            {% for tag in user.tags %}
+                                                {% if forloop.counter < 4 %}
+                                                    <a href="{% url 'underlord:to_tag_topics' %}?tag_name={{ tag.title }}&tag_board={{ tag.board }}">{{ tag.title }}</a>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
+                </div>
+
+                <div class="blank-bk" style="height: 400px"></div>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if paginator_users_page.has_previous %}
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page=1">&laquo; first</a>
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ paginator_users_page.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current mdl-button mdl-js-button mdl-button--primary">
+                            Page {{ paginator_users_page.number }} of {{ paginator_users_page.paginator.num_pages }}.
+                        </span>
+
+                        {% if paginator_users_page.has_next %}
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ paginator_users_page.next_page_number }}">next</a>
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page={{ paginator_users_page.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

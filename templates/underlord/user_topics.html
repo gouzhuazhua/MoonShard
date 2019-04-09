@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}我的主题{% endblock %}
+
+{% block content %}
+
+    <div class="update-user-info-main" style="width: 60%">
+        <div class="update-user-info-leftbar-circle">
+            <div class="update-user-info-leftbar">
+                <div class="update-user-info-leftbar-1"><strong>我的主题</strong></div>
+                {% block update-user-info-leftbar %}
+                    <a href="{% url 'underlord:user_topics_self' %}"><div class="update-user-info-leftbar-2">我发布的</div></a>
+                    <a href="{% url 'underlord:user_topics_other' %}"><div class="update-user-info-leftbar-3">我参与的</div></a>
+                {% endblock %}
+            </div>
+        </div>
+        <div class="update-user-info-right" style="width: 100%">
+            <div class="update-user-info-title"><h4>{% block update-user-info-title %}我发布的主题{% endblock %}</h4></div>
+            {% block userUpdateForm %}
+                <div class="update-user-info-content">
+                    <div class="update-user-info-flied">
+                        {% if topics_self.object_list %}
+                            {% for topic in topics_self.object_list %}
+                                <h5><a href="{% url 'rubick:get_topic_detail' topic.topic_id  %}">{{ forloop.counter }}.{{ topic.title }}</a> <span id="post2-info-{{ topic.topic_id }}" style="display: none;color: red"><strong>•</strong></span>  </h5>
+                                <strong>·</strong>发布时间：{{ topic.created_at }}&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong>·</strong>更新：{{ topic.updated_at }}&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong>·</strong>浏览数：{{ topic.views }}&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong>·</strong>点赞数：{{ topic.like }}&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong>·</strong>板块：{{ topic.board }}&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong>·</strong>管理：<a href="javascript:void(0);" onclick="do_delete_topic('{{ topic.topic_id }}', '{{ topic.board }}')">删除</a>
+                                <hr>
+                            {% endfor %}
+                        {% else %}
+                            <h5><strong>这里空空如也，快去发布自己第一个新主题吧！<a href="{% url 'rubick:new_topic' %}">发布主题</a> </strong></h5>
+                        {% endif %}
+                    </div>
+                    <div class="update-user-info-avatar"></div>
+                </div>
+                <div class="blank-bk" style="height: 500px"></div>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if topics_self.has_previous %}
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page=1">&laquo; first</a>
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ topics_self.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current mdl-button mdl-js-button mdl-button--primary">
+                            Page {{ topics_self.number }} of {{ topics_self.paginator.num_pages }}.
+                        </span>
+
+                        {% if topics_self.has_next %}
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ topics_self.next_page_number }}">next</a>
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page={{ topics_self.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+    <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+
+{% endblock %}
+
+{% block script_content %}
+    <script>
+        function do_delete_topic(topic_id, board) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "underlord:do_delete_topic" %}',
+                data: {
+                    'topic_id': topic_id,
+                    'board': board,
+                },
+                success:function (data) {
+                    'use strict';
+                    var snackbarContainer = document.querySelector('#demo-toast-example');
+                    'use strict';
+                    var msg_r = {message: '回复评论成功！ '};
+                    if(data == 500) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：500！ '};
+                    }else if(data == 400) {
+                        var msg_r = {message: '出错了，请稍后再试！错误代码：400！ '};
+                    }else {
+                        var msg_r = {message: '删除主题成功，即将刷新页面！ '};
+                    }
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    setTimeout("refresh()", 3000);
+                }
+            });
+        }
+        function refresh() {
+            window.location.reload();
+        }
+
+        window.onload = function () {
+            {% for topic in topics_self.object_list %}
+                {% for noti in request.user.notifications.unread %}
+                    console.info('{{ topic.topic_id }}' + '--' + '{{ noti.verb }}');
+                    {% if noti.verb == topic.topic_id and noti.recipient == topic.starter %}
+
+                        $('#post2-info-{{ topic.topic_id }}').show();
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        };
+        $('.news').hide();
+    </script>
+
+
+
+{% endblock %}

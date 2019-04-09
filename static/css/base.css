@@ -16,10 +16,23 @@ a:hover{
     color: #66CCFF;
 }
 
-
+ol{
+    list-style:none;
+}
 
 #header{
     background-color: #24292e;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.mdl-layout__drawer-button{
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.mdl-layout__content{
+    padding-top: 60px;
 }
 
 /*header*/
@@ -72,9 +85,10 @@ a:hover{
 /*end header*/
 
 /*footer*/
-/*.page-content{*/
-    /*padding-bottom: 300px; !*需要 >= footer的height值*!*/
-/*}*/
+.page-content{
+    display: flex;
+    flex-direction: row;
+}
 
 #footer{
     /*position:absolute;*/
@@ -98,13 +112,29 @@ a:hover{
 .index-content{
     /*margin-left: 5%;*/
     display: flex;
-    flex-wrap: wrap;
-
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
+.row-1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.row-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 #index-card-1{
-    position:relative;
-    margin-top: 4%;
-    margin-left: 8%;
+    margin: 20px;
+    /*position:relative;*/
+    /*margin-top: 4%;*/
+    /*margin-left: 8%;*/
 }
 
 #index-card-1 > .mdl-card__title{
@@ -114,9 +144,10 @@ a:hover{
 }
 
 #index-card-2{
-    position:relative;
-    margin-top: 4%;
-    margin-left: 8%;
+    margin: 20px;
+    /*position:relative;*/
+    /*margin-top: 4%;*/
+    /*margin-left: 8%;*/
 }
 
 #index-card-2 > .mdl-card__title{
@@ -126,9 +157,10 @@ a:hover{
 }
 
 #index-card-3{
-    position:relative;
-    margin-top: 4%;
-    margin-left: 8%;
+    margin: 20px;
+    /*position:relative;*/
+    /*margin-top: 4%;*/
+    /*margin-left: 8%;*/
 }
 
 #index-card-3 > .mdl-card__title{
@@ -138,9 +170,10 @@ a:hover{
 }
 
 #index-card-4{
-    position:relative;
-    margin-top: 4%;
-    margin-left: 8%;
+    margin: 20px;
+    /*position:relative;*/
+    /*margin-top: 4%;*/
+    /*margin-left: 8%;*/
 }
 
 #index-card-4 > .mdl-card__title{

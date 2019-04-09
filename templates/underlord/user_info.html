@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+
+{% block title %}个人中心{% endblock %}
+
+{% block content %}
+    <div class="page-content-main">
+        <div class="left-sidebar">
+            <div class="left-sidebar-content">
+                <ol style="line-height: 30px">
+                    <li>
+                        <a href="{% url 'index' %}" class="li-index" style="padding-left: 5%">
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li style="background-color: #f3f3f3;border-right: 3px solid #0366d6;height: 30px;">
+                        <a href="{% url 'rubick:home' %}" class="li-index" style="padding-left: 10%">
+                            <span><strong>Moon Shard</strong></span>
+                        </a>
+                    </li>
+                    <ol>
+                        <li>
+                            <a href="{% url 'underlord:to_all_tags' %}" class="li-tag">标签</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'underlord:to_all_users' %}" class="li-user">用户</a>
+                        </li>
+
+                    </ol>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="user-info-contents">
+            <div class="user-info-contents-head">
+                <div class="user-info-contents-head-circle">
+                    <div class="user-info-contents-head-title">
+                        <div class="user-info-tab" style="width: 100px"><button class="mdl-button mdl-js-button" disabled>个人资料</button></div>
+                        <div class="user-topic-tab"><button class="mdl-button mdl-js-button">我的好友</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info-contents-body">
+                <div class="user-info-contents-body-top">
+                    <div class="user-info-contents-body-top-avatar">
+{#                    头像#}
+                        <!-- Image card -->
+                        <style>
+                        .demo-card-image.mdl-card {
+                          width: 256px;
+                          height: 256px;
+                          background: url({{ user.avatar.url }}) center / cover;
+                        }
+                        .demo-card-image > .mdl-card__actions {
+                          height: 52px;
+                          padding: 16px;
+                          background: rgba(0, 0, 0, 0.2);
+                        }
+                        .demo-card-image__filename {
+                          color: #fff;
+                          font-size: 14px;
+                          font-weight: 500;
+                        }
+                        </style>
+                        <div class="user-info-contents-body-top-avatar-circle">
+                            <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                                <div class="mdl-card__title mdl-card--expand"></div>
+                                <div class="mdl-card__actions">
+                                <span class="demo-card-image__filename"><strong>{{ user.username }}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-info-contents-body-top-introduce">
+{#                    简介#}
+                        <div class="user-info-contents-body-top-introduce-name">
+                            <h3><strong>{{ user.username }}</strong></h3>
+{#                            判断是否是用户自己，如果是自己则隐藏关注按钮#}
+                            {% if request.user != user and follow_record_len == 0 %}
+                                <div class="user-info-contents-body-top-introduce-name-follow-btn">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                            id="follow-cancel-btn"
+                                            style="display: none">取消关注</button>
+                                </div>
+                                <div class="user-info-contents-body-top-introduce-name-follow-btn">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                            id="follow-btn"
+                                            style="display: block">关注</button>
+                                </div>
+                            {% elif request.user != user and follow_record_len == 1 %}
+                                <div class="user-info-contents-body-top-introduce-name-follow-btn">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                            id="follow-cancel-btn"
+                                            style="display: block">取消关注</button>
+                                </div>
+                                <div class="user-info-contents-body-top-introduce-name-follow-btn">
+                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                            id="follow-btn"
+                                            style="display: none">关注</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="user-info-contents-body-top-introduce-content">
+                            <p>{{ user.introduce }}</p>
+                        </div>
+                    </div>
+                    <div class="user-info-contents-body-top-details">
+{#                    详细信息#}
+                        <div class="user-info-contents-body-top-details-circle">
+                            <div class="user-info-contents-body-top-details-age">
+                                <p>年龄：{{ user.age }}</p>
+                            </div>
+                            <div class="user-info-contents-body-top-details-sex">
+                                <p>性别：{{ user.sex }}</p>
+                            </div>
+                            <div class="user-info-contents-body-top-details-email">
+                                <p>邮箱：{{ user.email }}</p>
+                            </div>
+                            <div class="user-info-contents-body-top-details-addr">
+                                <p>公寓：{{ user.addr }}</p>
+                            </div>
+                            <div class="user-info-contents-body-top-details-date_joined">
+                                <p>加入时间：{{ user.date_joined }}</p>
+                            </div>
+                            <div class="user-info-contents-body-top-details-last_login">
+                                <p>上次登录：{{ user.last_login }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-info-contents-body-bottom">
+                    <div class="user-info-contents-body-bottom-tags">
+{#                    标签#}
+                        <div class="user-info-contents-body-bottom-tags-title">
+                            <h5><strong>个人标签</strong></h5>
+                        </div>
+                        <div class="user-info-contents-body-bottom-tags-content">
+                            {% for key, value in user_tags.items %}
+                                <div class="user-info-contents-body-bottom-tags-div" style="border-top: 2px solid {{ key.color_hover }};">
+                                    <div class="user-info-contents-body-bottom-tags-div-tag-circle" style="border: 1px solid {{ key.color }};">
+                                        <div class="user-info-contents-body-bottom-tags-div-tag">
+                                            <a href="#" style="color: {{ key.color_hover }}">{{ key }}:{{ value }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+                <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
+                </div>
+{#                判断是当前用户才显示修改资料按钮#}
+                {% if request.user == now_user %}
+                    <div class="user-info-contents-body-update">
+    {#                    修改按钮#}
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                id="update-user-info-btn"
+                                onclick="window.location.href='{% url 'underlord:update_user' %}'">修改资料</button>
+                    </div>
+                {% endif %}
+            </div>
+        <div class="blank-bk" style="height: 200px"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script_content %}
+    <script>
+        $(function () {
+            $("#follow-btn").click(function () {
+                var follow_object_username = "{{ user.username }}";
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "underlord:do_follow" %}',
+                    data: {
+                        'follow_object_username': follow_object_username,
+                    },
+                    success:function (data) {
+                        'use strict';
+                        var snackbarContainer = document.querySelector('#demo-toast-example');
+                        'use strict';
+                        var msg_r = {message: '关注成功！ '};
+                        if(data == 200){
+                            $("#follow-btn").hide();
+                            $("#follow-cancel-btn").show();
+                            msg_r = {message: '关注成功！ '};
+                        }else if(data == 500){
+                            msg_r = {message: '出错了，请稍后再试！错误代码：500 '};
+                        }else{
+                            msg_r = {message: '出错了，请稍后再试！错误代码：400 '};
+                        }
+                        snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    }
+                });
+            });
+
+            $(function () {
+                $('#follow-cancel-btn').click(function () {
+                    var follow_object_username = "{{ user.username }}";
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "underlord:do_cancel_follow" %}',
+                        data: {
+                            'follow_object_username': follow_object_username,
+                        },
+                        success:function (data) {
+                            'use strict';
+                            var snackbarContainer = document.querySelector('#demo-toast-example');
+                            'use strict';
+                            var msg_r = {message: '取消关注成功！ '};
+                            if(data == 200){
+                                $("#follow-btn").show();
+                                $("#follow-cancel-btn").hide();
+                                msg_r = {message: '取消关注成功！ '};
+                            }else if(data == 500){
+                                msg_r = {message: '出错了，请稍后再试！错误代码：500 '};
+                            }else{
+                                msg_r = {message: '出错了，请稍后再试！错误代码：400 '};
+                            }
+                            snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

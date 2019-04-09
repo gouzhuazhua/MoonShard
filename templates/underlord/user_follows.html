@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}我的关注{% endblock %}
+
+{% block content %}
+    <div class="page-content-main">
+        <div class="left-sidebar">
+            <div class="left-sidebar-content">
+                <ol style="line-height: 30px">
+                    <li>
+                        <a href="{% url 'index' %}" class="li-index" style="padding-left: 5%">
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li style="background-color: #f3f3f3;border-right: 3px solid #0366d6;height: 30px;">
+                        <a href="{% url 'rubick:home' %}" class="li-index" style="padding-left: 10%">
+                            <span><strong>Moon Shard</strong></span>
+                        </a>
+                    </li>
+                    <ol>
+                        <li>
+                            <a href="{% url 'underlord:to_all_tags' %}" class="li-tag">标签</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'underlord:to_all_users' %}" class="li-user">用户</a>
+                        </li>
+
+                    </ol>
+                </ol>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="user-info-contents">
+            <div class="user-info-contents-head">
+                <div class="user-info-contents-head-circle">
+                    <div class="user-info-contents-head-title">
+                        <div class="user-info-tab-2"><button class="mdl-button mdl-js-button" >个人资料</button></div>
+                        <div class="user-follow-tab"><button class="mdl-button mdl-js-button" disabled>我的关注</button></div>
+                        <div class="user-follow-bk"><button class="mdl-button mdl-js-button" disabled></button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info-contents-body">
+                <div class="user-info-contents-body-top">
+                    <div class="user-follow-circel">
+                        {% if user_follows.object_list %}
+                            {% for user_follow in user_follows.object_list %}
+                                <div class="user-follow-single" style="padding-left: 10px;padding-top: 10px">
+                                    <!-- Square card -->
+                                    <style>
+                                        .demo-card-square.mdl-card {
+                                            width: 320px;
+                                            height: 320px;
+                                        }
+                                        #follow-avatar-{{ user_follow.follow_object.username }} {
+                                            color: #fff;
+                                            background:
+                                            url('{{ user_follow.follow_object.avatar.url }}') bottom right 15% no-repeat #46B6AC;
+                                        }
+                                    </style>
+
+                                    <div class="demo-card-square mdl-card mdl-shadow--2dp">
+                                        <div class="mdl-card__title mdl-card--expand" id="follow-avatar-{{ user_follow.follow_object.username }}">
+                                            <h2 class="mdl-card__title-text">{{ user_follow.follow_object.username }}</h2>
+                                        </div>
+                                        <div class="mdl-card__supporting-text">
+                                            {% if user_follow.follow_object.introduce != '' %}
+                                                {{ user_follow.follow_object.introduce }}
+                                            {% else%}
+                                                这个人很懒，没有留下自己得简介。
+                                            {% endif %}
+
+                                        </div>
+                                        <div class="mdl-card__actions mdl-card--border">
+                                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{% url 'underlord:to_msg_box' %}?username={{ user_follow.follow_object.username }}">
+                                                发送消息
+                                                <span style="color: red;display: none" id="info2-point-{{ user_follow.follow_object.username }}">•</span>
+                                            </a>
+                                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="javascript:void(0);" onclick="do_cancel_dollow_2('{{ user_follow.follow_object.username }}')">
+                                                取消关注
+                                            </a>
+                                            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{% url 'underlord:userInfo'  user_follow.follow_object.username  %}">
+                                                个人中心
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h5><strong>这里空空如也，从关注第一个小伙伴开始吧！<a href="#">朋友</a> </strong></h5>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="user-info-contents-body-bottom">
+                    <div class="user-info-contents-body-bottom-tags">
+{#                    标签#}
+                        <div class="user-info-contents-body-bottom-tags-title">
+{#                            <h5><strong>个人标签</strong></h5>#}
+                        </div>
+                        <div class="user-info-contents-body-bottom-tags-content">
+{#                            {% for key, value in user_tags.items %}#}
+{#                                <div class="user-info-contents-body-bottom-tags-div" style="border-top: 2px solid {{ key.color_hover }};">#}
+{#                                    <div class="user-info-contents-body-bottom-tags-div-tag-circle" style="border: 1px solid {{ key.color }};">#}
+{#                                        <div class="user-info-contents-body-bottom-tags-div-tag">#}
+{#                                            <a href="#" style="color: {{ key.color_hover }}">{{ key }}:{{ value }}</a>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+                        </div>
+
+                    </div>
+                </div>
+                <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
+                </div>
+{#                判断是当前用户才显示修改资料按钮#}
+                {% if request.user == now_user %}
+                    <div class="user-info-contents-body-update">
+    {#                    修改按钮#}
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                id="update-user-info-btn"
+                                onclick="window.location.href='{% url 'underlord:update_user' %}'">修改资料</button>
+                    </div>
+                {% endif %}
+            </div>
+        <div class="blank-bk" style="height: 200px"></div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block script_content %}
+    <script>
+        function do_cancel_dollow_2(username) {
+            var follow_object_username = username;
+            $.ajax({
+                type: 'POST',
+                url: '{% url "underlord:do_cancel_follow" %}',
+                data: {
+                    'follow_object_username': follow_object_username,
+                },
+                success:function (data) {
+                    'use strict';
+                    var snackbarContainer = document.querySelector('#demo-toast-example');
+                    'use strict';
+                    var msg_r = {message: '取消关注成功！ '};
+                    if(data == 200){
+                        $("#follow-btn").show();
+                        $("#follow-cancel-btn").hide();
+                        msg_r = {message: '取消关注成功！3秒后刷新页面 '};
+                    }else if(data == 500){
+                        msg_r = {message: '出错了，请稍后再试！错误代码：500 '};
+                    }else{
+                        msg_r = {message: '出错了，请稍后再试！错误代码：400 '};
+                    }
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    setTimeout("refresh()", 3000);
+                }
+            });
+        }
+        function refresh() {
+            window.location.reload();
+        }
+
+        window.onload = function () {
+            {% for user_follow in user_follows.object_list %}
+                {% for noti in request.user.notifications.unread %}
+                    {% if noti.level == 'info' and noti.actor == user_follow.follow_object %}
+                        $('#info2-point-{{ user_follow.follow_object.username }}').show();
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        };
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}所有标签{% endblock %}
+
+{% block content %}
+    <div class="page-content-main">
+        <div class="left-sidebar">
+            <div class="left-sidebar-content">
+                <ol style="line-height: 30px">
+                    <li>
+                        <a href="{% url 'index' %}" class="li-index" style="padding-left: 5%">
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a href="{% url 'rubick:home' %}" class="li-index" style="padding-left: 10%">
+                            <span><strong>Moon Shard</strong></span>
+                        </a>
+                    </li>
+                    <ol>
+                        <li style="background-color: #f3f3f3;border-right: 3px solid #0366d6;height: 30px;padding-left: 10px; line-height: 30px">
+                            <a href="{% url 'underlord:to_all_tags' %}" class="li-tag">标签</a>
+                        </li>
+                        <li >
+                            <a href="{% url 'underlord:to_all_users' %}" class="li-user">用户</a>
+                        </li>
+
+                    </ol>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="user-info-contents">
+            <div class="user-info-contents-head">
+                <div class="user-info-contents-head-circle">
+                    <div class="user-info-contents-head-title">
+                        <h5><strong>所有标签</strong></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info-contents-body">
+                <div class="user-info-contents-body-top">
+                    <div class="user-follow-circel">
+{#                        所有用户#}
+                        {% for tag in paginator_tags_page.object_list %}
+                            <div class="all-user-main-circle" >
+                                <div class="all-tags-main" >
+                                    <div class="all-tags-main-detail-title"><span style="color: {{ tag.tag.color }}"><strong>◉</strong></span> <a href="{% url 'underlord:to_tag_topics' %}?tag_name={{ tag.tag.title }}&tag_board={{ tag.tag.board }}">{{ tag.tag.title }}</a></div>
+                                    <div class="all-tags-main-detail-introduce">{{ tag.tag.introduce }}</div>
+                                    <div class="all-tags-main-detail-count"> <span style="color: grey">主题数量：</span> <strong>{{ tag.count }}</strong></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
+                </div>
+
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if paginator_tags_page.has_previous %}
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page=1">&laquo; first</a>
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ paginator_tags_page.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current mdl-button mdl-js-button mdl-button--primary">
+                            Page {{ paginator_tags_page.number }} of {{ paginator_tags_page.paginator.num_pages }}.
+                        </span>
+
+                        {% if paginator_tags_page.has_next %}
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ paginator_tags_page.next_page_number }}">next</a>
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page={{ paginator_tags_page.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

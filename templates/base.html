@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load notifications_tags %}
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
 {#    <link rel="stylesheet" href="{% static 'css/nprogress.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
     <link rel="stylesheet" href="{% static 'css/base-board.css' %}">
     <link rel="stylesheet" href="{% static 'css/base-topic.css' %}">
     {% block media_link %} {% endblock %}
@@ -43,18 +45,36 @@
 
             {% if user.is_authenticated %}
                 <div id="head-msg">
-                    <span class="mdl-badge" data-badge="4"><a href="#">消息</a></span>
+                    <span class="mdl-badge" data-badge="{% notifications_unread  %}" id="btn0">
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="btn0" style="color: grey">
+                            我的动态
+                        </button>
+                        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn0">
+                            <li class="mdl-menu__item">
+                                <a href="{% url 'underlord:user_topics_self' %}">主题动态</a>
+                                <span style="color: red;display: none" id="post-point">•</span>
+                            </li>
+                            <li class="mdl-menu__item">
+                                <a href="{% url 'underlord:to_my_follows' %}">好友消息</a>
+                                <span style="color: red;display: none" id="info-point">•</span>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn1">
-                    <img src="{% static 'avatar/me.jpg' %}" style="height: 40px; width: 40px;">
+                    {% block self_avatar %}
+                        <img src="{{ request.user.avatar.url }}" style="height: 40px; width: 40px;">
+                    {% endblock %}
                 </button>
                 <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
-                    <li class="mdl-menu__item" disabled>以<b>{{ user.username }}</b>登录</li>
+                    <li class="mdl-menu__item" disabled>以<b>{{ request.user.username }}</b>登录</li>
 {#                        <li class="mdl-menu__item" disabled></li>#}
                     <hr/>
-                    <li class="mdl-menu__item"><a href="#">个人资料</a></li>
-                    <li class="mdl-menu__item"><a href="#">我的帖子</a></li>
+                    <li class="mdl-menu__item"><a href="{% url 'underlord:userInfo' request.user.username %}">个人中心</a></li>
+                    <li class="mdl-menu__item"><a href="{% url 'underlord:user_topics_self' %}">我的主题</a></li>
+                    <li class="mdl-menu__item"><a href="{% url 'underlord:to_my_follows' %}">我的关注</a></li>
+                    <li class="mdl-menu__item"><a href="{% url 'logout' %}">注销登录</a></li>
                 </ul>
             {% else %}
                 <span class="head-register-login">
@@ -78,42 +98,45 @@
         <main class="mdl-layout__content">
             <div class="page-content"><!-- Your content goes here -->
                 {% block content %}{% endblock %}
-
-
+            <div class="news">
+                <div class="news-circle">
+                    {% block news %}{% endblock %}
+                </div>
             </div>
-            <footer class="mdl-mega-footer" id="footer">
+            </div>
+            <footer class="mdl-mega-footer" id="footer" >
         <div class="mdl-mega-footer__middle-section">
 
             <div class="mdl-mega-footer__drop-down-section">
                 <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
-                <h1 class="mdl-mega-footer__heading">Features</h1>
+                <h1 class="mdl-mega-footer__heading">社区特点</h1>
                 <ul class="mdl-mega-footer__link-list">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Terms</a></li>
-                    <li><a href="#">Partners</a></li>
-                    <li><a href="#">Updates</a></li>
+                    <li><a href="#">关于</a></li>
+                    <li><a href="#">条款</a></li>
+                    <li><a href="#">伙伴</a></li>
+                    <li><a href="#">更新</a></li>
                 </ul>
             </div>
 
             <div class="mdl-mega-footer__drop-down-section">
                 <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
-                <h1 class="mdl-mega-footer__heading">Details</h1>
+                <h1 class="mdl-mega-footer__heading">产品</h1>
                 <ul class="mdl-mega-footer__link-list">
-                    <li><a href="#">Specs</a></li>
-                    <li><a href="#">Tools</a></li>
-                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">团队</a></li>
+                    <li><a href="#">工具</a></li>
+                    <li><a href="#">资源</a></li>
                 </ul>
             </div>
 
             <div class="mdl-mega-footer__drop-down-section">
                 <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
-                <h1 class="mdl-mega-footer__heading">Technology</h1>
+                <h1 class="mdl-mega-footer__heading">技术</h1>
                 <ul class="mdl-mega-footer__link-list">
-                    <li><a href="#">How it works</a></li>
-                    <li><a href="#">Patterns</a></li>
-                    <li><a href="#">Usage</a></li>
-                    <li><a href="#">Products</a></li>
-                    <li><a href="#">Contracts</a></li>
+                    <li><a href="#">如何实现</a></li>
+                    <li><a href="#">模式</a></li>
+                    <li><a href="#">使用</a></li>
+                    <li><a href="#">产品</a></li>
+                    <li><a href="#">条款</a></li>
                 </ul>
             </div>
 
@@ -121,36 +144,45 @@
                 <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
                 <h1 class="mdl-mega-footer__heading">FAQ</h1>
                 <ul class="mdl-mega-footer__link-list">
-                    <li><a href="#">Questions</a></li>
-                    <li><a href="#">Answers</a></li>
-                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">问题</a></li>
+                    <li><a href="#">回答</a></li>
+                    <li><a href="#">联系我们</a></li>
                 </ul>
             </div>
 
         </div>
 
         <div class="mdl-mega-footer__bottom-section">
-            <div class="mdl-logo">Title</div>
+            <div class="mdl-logo">Moon Shard</div>
             <ul class="mdl-mega-footer__link-list">
-                <li><a href="#">Help</a></li>
-                <li><a href="#">Privacy & Terms</a></li>
+                <li><a href="#">帮助</a></li>
+                <li><a href="#">隐私权和条款</a></li>
             </ul>
         </div>
 
     </footer>
         </main>
-
     </div>
-
-
-
     <script
         src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
         crossorigin="anonymous"></script>
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
+
     <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        window.onload = function () {
+            {% for noti in request.user.notifications.unread %}
+                {% if noti.level == 'info' %}
+                    $('#info-point').show();
+                {% elif noti.level == 'post' %}
+                    $('#post-point').show();
+                {% endif %}
+            {% endfor %}
+        };
+    </script>
     {% block script_content %}{% endblock %}
 </body>
 </html>

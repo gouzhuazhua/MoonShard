@@ -1,89 +1,99 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+
 {% block title %}MoonShard Index{% endblock %}
 
+{#{% block self_avatar %}#}
+{#    <img src="{% static 'avatar/avatar_22194.jpg' %}" style="height: 40px; width: 40px;">#}
+{#{% endblock %}#}
+
 {% block content %}
-    <div style="text-align: center">
-        <h3>Welcome to MoonShard Community!</h3>
+    <div class="index-content-circle" style="margin:0 auto">
+        <div style="text-align: center">
+            <h3>欢迎来到MoonShard社区！</h3>
+        </div>
+        <!-- Wide card with share menu button -->
+        <div class="index-content">
+            <div class="row-1">
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-1">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">学习交流</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        在这里提出一个问题并获得解答或者向其他同学提供帮助！
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{% url 'rubick:home' %}">
+                            开始
+                        </a>
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                            <i class="material-icons">share</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-2">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">生活分享</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        将你生活中遇到的人和事分享给大家吧！
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                            开始
+                        </a>
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                            <i class="material-icons">share</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row-2">
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-3">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">感情流露</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    有什么感情上的问题吗？来这里试试能不能遇到能关心你的人。
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        开始
+                    </a>
+                </div>
+                <div class="mdl-card__menu">
+                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                        <i class="material-icons">share</i>
+                    </button>
+                </div>
+            </div>
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-4">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">市场</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    不想要的东西别扔掉，说不定有人正需要！
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        开始
+                    </a>
+                </div>
+                <div class="mdl-card__menu">
+                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                        <i class="material-icons">share</i>
+                    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+    <div class="blank-bk" style="height: 100px"></div>
     </div>
-    <!-- Wide card with share menu button -->
-    <div class="index-content">
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-1">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">学习交流</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{% url 'rubick:home' %}">
-                    开始
-                </a>
-            </div>
-            <div class="mdl-card__menu">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">share</i>
-                </button>
-            </div>
-        </div>
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-2">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">生活分享</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                    开始
-                </a>
-            </div>
-            <div class="mdl-card__menu">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">share</i>
-                </button>
-            </div>
-        </div>
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-3">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">感情流露</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                    开始
-                </a>
-            </div>
-            <div class="mdl-card__menu">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">share</i>
-                </button>
-            </div>
-        </div>
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp" id="index-card-4">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">市场</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                    开始
-                </a>
-            </div>
-            <div class="mdl-card__menu">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">share</i>
-                </button>
-            </div>
-        </div>
-    </div>
+
 
 {% endblock %}

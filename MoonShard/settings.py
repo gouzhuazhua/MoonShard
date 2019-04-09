@@ -48,6 +48,11 @@ INSTALLED_APPS = [
     'underlord',
     'rubick',
     'ckeditor',
+    # 美化
+    'widget_tweaks',
+    'imagekit',
+    # 消息
+    'notifications',
 
 ]
 
@@ -92,8 +97,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'moonshard',
         'USER': 'root',
-        'PASSWORD': 'Sapphire1499!',
-        'HOST': '120.79.209.94',
+        'PASSWORD': 'Input1016!',
+        'HOST': '192.168.0.111',
         'PORT': '3306',
     }
 }
@@ -140,6 +145,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+# 媒体文件地址
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'

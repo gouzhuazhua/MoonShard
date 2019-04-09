@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from xadmin.plugins import xversion
 from underlord import views as ud_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 import xadmin
 xadmin.autodiscover()
@@ -30,5 +32,9 @@ urlpatterns = [
     path('accounts/', include('underlord.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
+    path(r'^notifications/', include('notifications.urls')),
+
     path('learning/', include('rubick.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

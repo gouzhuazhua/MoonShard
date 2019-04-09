@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}我的主题{% endblock %}
+
+{% block content %}
+
+    <div class="update-user-info-main" style="width: 80%">
+        <div class="update-user-info-leftbar-circle">
+            <div class="update-user-info-leftbar">
+                <div class="update-user-info-leftbar-1"><strong>我的主题</strong></div>
+                {% block update-user-info-leftbar %}
+                    <a href="{% url 'underlord:user_topics_self' %}"><div class="update-user-info-leftbar-3">我发布的</div></a>
+                    <a href="{% url 'underlord:user_topics_other' %}"><div class="update-user-info-leftbar-2">我参与的</div></a>
+                {% endblock %}
+            </div>
+        </div>
+        <div class="update-user-info-right">
+            <div class="update-user-info-title"><h4>{% block update-user-info-title %}我参与的主题{% endblock %}</h4></div>
+            {% block userUpdateForm %}
+                <div class="update-user-info-content">
+                    <div class="update-user-info-flied">
+                        {% for topic in topics_other.object_list %}
+                            <h5><a href="{% url 'rubick:get_topic_detail' topic.topic_id  %}">{{ forloop.counter }}.{{ topic.title }}</a> </h5>
+                            <strong>·</strong>发布时间：{{ topic.created_at }}&nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>·</strong>最近更新：{{ topic.updated_at }}&nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>·</strong>浏览数：{{ topic.views }}&nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>·</strong>点赞数：{{ topic.like }}&nbsp;&nbsp;&nbsp;&nbsp;
+                            <strong>·</strong>板块：{{ topic.board }}
+                            <hr>
+                        {% endfor %}
+                    </div>
+                    <div class="update-user-info-avatar"></div>
+                </div>
+                <div class="blank-bk" style="height: 500px"></div>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if topics_other.has_previous %}
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page=1">&laquo; first</a>
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ topics_other.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current mdl-button mdl-js-button mdl-button--primary">
+                            Page {{ topics_other.number }} of {{ topics_other.paginator.num_pages }}.
+                        </span>
+
+                        {% if topics_other.has_next %}
+                            <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ topics_other.next_page_number }}">next</a>
+                            <a class="mdl-button mdl-js-button mdl-button--accent" href="?page={{ topics_other.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+
+
+{% endblock %}

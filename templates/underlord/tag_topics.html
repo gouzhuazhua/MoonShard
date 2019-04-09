@@ -2,16 +2,16 @@
 
 {%  load staticfiles %}
 
-{% block title %}开始学习{% endblock %}
+{% block title %}{{ tag_name }}{% endblock %}
 
-{% block board_title %}开始学习{% endblock %}
+{% block board_title %}{{ tag_name }}{% endblock %}
 
-{% block new_topic_url %}{% url 'rubick:new_topic' %}{% endblock %}
+{#{% block new_topic_url %}{% url 'rubick:new_topic' %}{% endblock %}#}
 
-{% block topic_num %}{{ topic_amount }}{% endblock %}
+{% block topic_num %}{{ topics_count }}{% endblock %}
 
 {% block topic-summary %}
-    {% for topic in all_topics.object_list  %}
+    {% for topic in paginator_topics_page.object_list  %}
         <div class="topic-summary">
             <div class="stats-container">
                 <div class="like-stats">
@@ -62,7 +62,7 @@
                             </div>
                             <div class="author-msg">
                                 <div class="author-name"><a href="{% url 'underlord:userInfo' topic.starter.username %}">{{ topic.starter }}</a></div>
-                                <div class="author-answers"><span style="color: red">★</span>:{{ topic.score }}</div>
+                                <div class="author-answers">1024</div>
                             </div>
                         </div>
                         <div class="created-time">{{ topic.created_at }}</div>
@@ -70,37 +70,24 @@
                 </div>
             </div>
         </div>
-        {{ all_topics.full_name | upper }}
+        {{ paginator_topics_page.full_name | upper }}
     {% endfor %}
-{#    <div class="blank-bk" style="height: 300px"></div>#}
+    <div class="blank-bk" style="height: 500px"></div>
     <div class="pagination">
         <span class="step-links">
-            {% if all_topics.has_previous %}
+            {% if paginator_topics_page.has_previous %}
                 <a class="mdl-button mdl-js-button mdl-button--accent" href="?page=1">&laquo; first</a>
-                <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ all_topics.previous_page_number }}">previous</a>
+                <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ paginator_topics_page.previous_page_number }}">previous</a>
             {% endif %}
 
             <span class="current mdl-button mdl-js-button mdl-button--primary">
-                Page {{ all_topics.number }} of {{ all_topics.paginator.num_pages }}.
+                Page {{ paginator_topics_page.number }} of {{ paginator_topics_page.paginator.num_pages }}.
             </span>
 
-            {% if all_topics.has_next %}
-                <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ all_topics.next_page_number }}">next</a>
-                <a class="mdl-button mdl-js-button mdl-button--accent" href="?page={{ all_topics.paginator.num_pages }}">last &raquo;</a>
+            {% if paginator_topics_page.has_next %}
+                <a class="mdl-button mdl-js-button mdl-button--primary" href="?page={{ paginator_topics_page.next_page_number }}">next</a>
+                <a class="mdl-button mdl-js-button mdl-button--accent" href="?page={{ paginator_topics_page.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
         </span>
     </div>
-{% endblock %}
-
-{% block news %}
-    {% for news in news_6 %}
-        <div class="single-news">
-            <div class="single-news-title"><h5>{{ forloop.counter }} {{ news.title }}</h5></div>
-            <div class="single-news-subject">
-                {% autoescape off %}
-                    {{ news.subject }}
-                {% endautoescape %}
-            </div>
-        </div>
-    {% endfor %}
 {% endblock %}

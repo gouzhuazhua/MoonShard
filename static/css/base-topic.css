@@ -1,7 +1,7 @@
 .topic-contents{
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 70%;
     padding-left: 20px;
 }
 .topic-contents-head{
@@ -17,6 +17,9 @@
     justify-content: space-between;
     align-items: center;
 }
+.topic-title-h5{
+    font-size: 26px;
+}
 .topic-detail{
     display: flex;
     flex-direction: row;
@@ -24,20 +27,119 @@
     align-items: center;
 }
 .topic-mainbar{
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    /*align-items: center;*/
 }
 .topic-host{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*align-items: center;*/
+    border-bottom: 2px solid #eff0f1;
+}
+.topic-host-1{
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
 }
+.topic-host-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    /*align-items: center;*/
+}
+.topic-reply{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*align-items: center;*/
+
+}
+.single-post{
+    border-bottom: 1px solid #eff0f1;
+}
+.post-reply-single{
+    border-top: 1px solid #eff0f1;
+}
+.post-reply-single-content{
+    padding-top: 5px;
+}
+.topic-post-1{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.topic-post-12{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    /*align-items: center;*/
+}
+.topic-post-delete{
+    padding-left: 110px;
+}
+.topic-post-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    /*align-items: center;*/
+}
+.topic-post-all{
+    padding-left: 2%;
+    width: 100%;
+}
+.js-voting-container-circle{
+
+}
 .js-voting-container{
+    margin: 10px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+}
+.js-vote-up-btn{
+    width: 50px;
+    height: 30px;
+    font-size: 45px;
+    color: green;
+}
+.js-vote-down-btn{
+    width: 50px;
+    height: 30px;
+    font-size: 45px;
+    color: grey;
+}
+.js-vote-count{
+    font-size: 28px;
+    padding: 20px 0;
+}
+
+.topic-subject{
+    padding-left: 2%;
+}
+
+/*2019-2-25 13:48:51 新建主题页面样式*/
+.new_topic_content{
+    /*padding-left: 5%;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.new_topic_title{
+
+    align-content: center;
+}
+.new_topic_form{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }

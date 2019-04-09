@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% load notifications_tags %}
+
+{% block title %}发送消息{% endblock %}
+
+{% block content %}
+    <div class="page-content-main">
+        <div class="left-sidebar">
+            <div class="left-sidebar-content">
+                <ol style="line-height: 30px">
+                    <li>
+                        <a href="{% url 'index' %}" class="li-index" style="padding-left: 5%">
+                            <span>首页</span>
+                        </a>
+                    </li>
+                    <li style="background-color: #f3f3f3;border-right: 3px solid #0366d6;height: 30px;">
+                        <a href="{% url 'rubick:home' %}" class="li-index" style="padding-left: 10%">
+                            <span><strong>Moon Shard</strong></span>
+                        </a>
+                    </li>
+                    <ol>
+                        <li>
+                            <a href="{% url 'underlord:to_all_tags' %}" class="li-tag">标签</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'underlord:to_all_users' %}" class="li-user">用户</a>
+                        </li>
+
+                    </ol>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="user-info-contents">
+            <div class="user-info-contents-head">
+                <div class="user-info-contents-head-circle">
+                    <div class="user-info-contents-head-title">
+                        <div class="user-follow-tab"><button class="mdl-button mdl-js-button" disabled><strong>{{ msg_object.username }}</strong></button></div>
+                        <div class="user-follow-bk"><button class="mdl-button mdl-js-button" disabled></button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-info-contents-body">
+                <div class="msg_box_1">
+                    <div class="user-msg-circel">
+                        {% for msg in msg_content %}
+                            {% if msg.actor == request.user %}
+                                <div>
+                                    <div style="float: right">
+                                        <div style="float: left">
+                                            {% autoescape off %}
+                                                {{ msg.verb }}
+                                            {% endautoescape %}
+                                        </div>
+                                        <div style="float: right">
+                                            <p>-{{ msg.timestamp }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div>
+                                    <div style="float: left">
+                                        {% autoescape off %}
+                                            {{ msg.verb }}
+                                        {% endautoescape %}
+                                    </div>
+                                    <div>
+                                        <p>-{{ msg.timestamp }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div style="height: 500px"></div>
+                    <div class="msg-box" id="msg-box" style="width: 100%">
+                        <div id="editor">
+                            请在这里输入要发送的消息...<br>
+                            Here goes the initial content of the editor.
+                        </div>
+                        <br>
+                        <div style="float: right">
+                            <button onclick="do_send_msg('{{ msg_object.username }}')"
+                                    id="demo-show-toast-reply"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                    style="background-color: #009688 !important">发送消息</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-info-contents-body-bottom">
+                    <div class="user-info-contents-body-bottom-tags">
+{#                    标签#}
+                        <div class="user-info-contents-body-bottom-tags-title">
+{#                            <h5><strong>个人标签</strong></h5>#}
+                        </div>
+                        <div class="user-info-contents-body-bottom-tags-content">
+{#                            {% for key, value in user_tags.items %}#}
+{#                                <div class="user-info-contents-body-bottom-tags-div" style="border-top: 2px solid {{ key.color_hover }};">#}
+{#                                    <div class="user-info-contents-body-bottom-tags-div-tag-circle" style="border: 1px solid {{ key.color }};">#}
+{#                                        <div class="user-info-contents-body-bottom-tags-div-tag">#}
+{#                                            <a href="#" style="color: {{ key.color_hover }}">{{ key }}:{{ value }}</a>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+                        </div>
+
+                    </div>
+                </div>
+                <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
+                </div>
+{#                判断是当前用户才显示修改资料按钮#}
+                {% if request.user == now_user %}
+                    <div class="user-info-contents-body-update">
+    {#                    修改按钮#}
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                id="update-user-info-btn"
+                                onclick="window.location.href='{% url 'underlord:update_user' %}'">修改资料</button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script_content %}
+    <script>
+        var my_editor = '';
+        ClassicEditor
+            .create( document.querySelector( '#editor'),  )
+            .then( editor => {
+                console.log( editor );
+                my_editor = editor;
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+
+        function do_send_msg(msg_object_name) {
+            var msg_content = my_editor.getData();
+            $.ajax({
+                type: 'POST',
+                url:  '{% url "underlord:do_msg_send" %}',
+                data: {
+                    'msg_object_name': msg_object_name,
+                    'msg_content': msg_content,
+                },
+                success:function (data) {
+                     'use strict';
+                    var snackbarContainer = document.querySelector('#demo-toast-example');
+                    'use strict';
+                    var msg_r = {message: '发送成功！ '};
+                    if(data == 200){
+                        $("#follow-btn").show();
+                        $("#follow-cancel-btn").hide();
+                        msg_r = {message: '发送消息成功！2秒后刷新页面 '};
+                    }else if(data == 500){
+                        msg_r = {message: '出错了，请稍后再试！错误代码：500 '};
+                    }else{
+                        msg_r = {message: '出错了，请稍后再试！错误代码：400 '};
+                    }
+                    snackbarContainer.MaterialSnackbar.showSnackbar(msg_r);
+                    setTimeout("refresh()", 2000);
+                }
+            });
+        }
+
+
+        function refresh() {
+            window.location.reload();
+        }
+
+        window.onload=function (){
+            $.ajax({
+                type: 'POST',
+                url:  '{% url "underlord:do_mark_read" %}',
+                data: {
+                    'msg_object_name': '{{ msg_object.username }}',
+                },
+                success:function (data) {
+                    console.info(data);
+                }
+            });
+        }
+    </script>
+{% endblock %}

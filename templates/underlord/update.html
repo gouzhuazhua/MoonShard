@@ -1,38 +1,130 @@
 {% extends 'base.html' %}
 
+{% load widget_tweaks %}
+
 {% block title %}修改个人资料{% endblock %}
 
 {% block content %}
-    <div class="flex-center">
-    <div class="container">
-        <div class="flex-center">
-            <div class="unit-1-2 unit-1-on-mobile">
-                <h3>个人资料修改</h3>
-                <form class="form" action="{% url 'underlord:update_user' %}" method="post">
-                    {% csrf_token %}
-                    <h5 style="color: red">{{ data.message }}</h5>
-                    {% for field in form %}
-                        {% if field.is_hidden %}
-                            {{ field }}
-                        {% else %}
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {{ field.errors }}
-                            {% if field.help_text %}
-                                <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    <button type="submit" class="btn btn-primary btn-block">修改</button>
-                    <input type="hidden" name="next" value="{{ next }}"/>
-                </form>
-                <div class="flex-left top-gap text-small">
-                    <div class="unit-2-3"><span>没有账号？<a href="{% url 'underlord:register' %}">立即注册</a></span></div>
-                    <div class="unit-1-3 flex-right"><span><a href="../500.html">忘记密码？</a></span></div>
-                </div>
+
+    <div class="update-user-info-main" style="width: 100%">
+        <div class="update-user-info-leftbar-circle">
+            <div class="update-user-info-leftbar">
+                <div class="update-user-info-leftbar-1"><strong>设置</strong></div>
+                {% block update-user-info-leftbar %}
+                    <a href="{% url 'underlord:update_user' %}"><div class="update-user-info-leftbar-2">基本资料</div></a>
+                    <a href="{% url 'password_change' %}"><div class="update-user-info-leftbar-3">账户</div></a>
+                {% endblock %}
             </div>
         </div>
-    </div>
-</div>
+        <div class="update-user-info-right">
+            <div class="update-user-info-title"><h4>{% block update-user-info-title %}公开资料{% endblock %}</h4></div>
+                {% block userUpdateForm %}
+                <form class="form" action="{% url 'underlord:update_user' %}" method="post" enctype="multipart/form-data" style="width: 100%">
+                    {% csrf_token %}
+                    <div class="update-user-info-content">
+                        <div class="update-user-info-flied">
+                            <h5 style="color: red">{{ data.message }}</h5>
+    {#                        用户名#}
+                            <strong>用户名：</strong><br>
+                            <div class="mdl-textfield mdl-js-textfield">
+                                <input class="mdl-textfield__input" type="text" id="sample1" value="{{ request.user }}" disabled>
+                            </div>
+                            <br>
 
+    {#                        性别#}
+                            <div>
+                                <strong>{{ form.sex.label_tag }}</strong><br><br>
+                                {% if form.sex.value == '2' %}
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                                        <input type="radio" id="option-1" class="mdl-radio__button" name="sex" value="1">
+                                        <span class="mdl-radio__label">男</span>
+                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                                        <input type="radio" id="option-2" class="mdl-radio__button" name="sex" value="2" checked>
+                                        <span class="mdl-radio__label">女</span>
+                                    </label>
+                                {% else %}
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                                        <input type="radio" id="option-1" class="mdl-radio__button" name="sex" value="1" checked>
+                                        <span class="mdl-radio__label">男</span>
+                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                                        <input type="radio" id="option-2" class="mdl-radio__button" name="sex" value="2">
+                                        <span class="mdl-radio__label">女</span>
+                                    </label>
+                                {% endif %}
+                            </div>
+                            <br>
+
+    {#                        年龄#}
+                            <strong>{{ form.age.label_tag }}</strong><br>
+                            <div class="mdl-textfield mdl-js-textfield">
+                                {{ form.age | attr:'id:sex' | attr:'pattern:-?[0-9]*(\.[0-9]+)?' | add_class:'mdl-textfield__input' }}
+                                <label class="mdl-textfield__label" for="sample2">Number...</label>
+                                <span class="mdl-textfield__error">请输入合法的数字!</span>
+                            </div>
+                            <br>
+
+    {#                        个人简介#}
+                            <strong>{{ form.introduce.label_tag }}</strong><br>
+                            <div class="mdl-textfield mdl-js-textfield">
+                                {{ form.introduce | attr:'id:introduce' | attr:'rows:3' | add_class:'mdl-textfield__input' }}
+    {#                            {{ form.introduce }}#}
+                                <label class="mdl-textfield__label" for="sample5">介绍下自己吧...</label>
+                            </div>
+                            <br>
+
+    {#                        公寓地址#}
+                            <strong>{{ form.addr.label_tag }}</strong><br>
+                            <div class="mdl-textfield mdl-js-textfield">
+                                {{ form.addr | attr:'id:addr' | add_class:'mdl-textfield__input' }}
+    {#                            {{ form.addr }}#}
+                                <label class="mdl-textfield__label" for="sample1">公寓...</label>
+                            </div>
+                            <br><br>
+                            <button type="submit" id="demo-show-toast"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                                    style="background-color: #009688 !important">修改资料</button>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+
+                        </div>
+                        <div class="update-user-info-avatar">
+                            <img src="{{ request.user.avatar.url }}">
+                            <a href="javascript:;" id="upload" class="a-upload mr10" style="width: 86%"><input type="file" name="avatar" id="">点击上传头像</a>
+                            <div class="showFileName"></div>
+                        </div>
+                    </div>
+                </form>
+                {% endblock %}
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block script_content %}
+    <script>
+        $(function() {
+        　　//显示隐藏的文件名并上传状态切换
+　　            $('.showFileName').hide();
+            　　$('#uploadBtn').hide();
+            　　$("#upload").on("change", "input[type='file']", function() {
+
+                　　var filePath = $(this).val();
+                　　//如果仅上传图片  if(filePath.indexOf("jpg") != -1 || filePath.indexOf("png") != -1) {
+                　　if(filePath) {
+                    　　　　$(".fileerrorTip").html("").hide();
+                    　　　　var arr = filePath.split('\\');
+                    　　　　var fileName = arr[arr.length - 1];
+                    　　　　$('.showFileName').show();
+                    　　　　$('#uploadBtn').show();
+                    　　　　$(".showFileName").html("已选择文件名：" + fileName);
+                    　　　　$('#upload').hide();
+                　　} else {
+                    　　　　$(".showFileName").html("");
+                    　　　　$(".fileerrorTip").html("您未上传文件，或者您上传文件类型有误！").show();
+                    　　　　return false
+                　　}
+            });
+        });
+    </script>
 {% endblock %}

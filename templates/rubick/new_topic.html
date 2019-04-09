@@ -1,43 +1,64 @@
 {% extends 'base.html' %}
 
-{% block title %}新建主题{% endblock %}
+{% block title %}新建学习主题{% endblock %}
 {% block media_link %}{{ form.media }}{% endblock %}
 {% block content %}
-    <div class="flex-center">
-    <div class="container">
-        <div class="flex-center">
-            <div class="unit-1-2 unit-1-on-mobile">
-                <h3>新建主题</h3>
-                <form class="form" action="{% url 'rubick:new_topic' %}" method="post">
-                    {% csrf_token %}
-                    {{ form.non_field_errors }}
-                    {% for field in form %}
-                        {{ field.label_tag }}
-                        {% if field.id_for_label == 'tags' %}
-                            <div id="input-tags-div">
-                                {{ field }}
+    <div class="flex-center" style="margin: auto">
+        <div class="container">
+            <div class="flex-center" >
+                <div class="new_topic_content">
+                    <div class="new_topic_title">
+                        <h3>新建·学习主题</h3>
+                    </div>
+                    <form class="form" action="{% url 'rubick:new_topic' %}" method="post">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <div class="new_topic_form">
+{#                            标题#}
+                            <span class="mdl-chip mdl-chip--contact">
+                                <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">A</span>
+                                <span class="mdl-chip__text">{{ form.title.label_tag }}</span>
+                            </span>
+                            <div class="mdl-textfield mdl-js-textfield" style="width: 100%">
+                                {{ form.title }}
+                                <label class="mdl-textfield__label" for="sample1">Text...</label>
                             </div>
-                            <div id="related-tags" style="visibility: hidden; background-color: #1b9dec"></div>
-                            <a href=""><span></span></a>
-                        {% else %}
-                            {{ field }}
-                        {% endif %}
-                        {{ field.errors }}
-                        {% if field.help_text %}
-                            <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
-                        {% endif %}
-                    {% endfor %}
-                    <button type="submit" class="btn btn-primary btn-block">新建</button>
-                    <input type="hidden" name="next" value="{{ next }}"/>
-                </form>
-                <div class="flex-left top-gap text-small">
-                    <div class="unit-2-3"><span>没有账号？<a href="{% url 'underlord:register' %}">立即注册</a></span></div>
-                    <div class="unit-1-3 flex-right"><span><a href="../500.html">忘记密码？</a></span></div>
+                            <br>
+
+{#                            主题#}
+                            <span class="mdl-chip mdl-chip--contact">
+                                <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">B</span>
+                                <span class="mdl-chip__text">{{ form.subject.label_tag }}</span>
+                            </span>
+                            <br>
+                            {{ form.subject }}
+                            <br>
+
+{#                            标签#}
+{#                            <span class="mdl-chip mdl-chip--contact">#}
+{#                                <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">C</span>#}
+{#                                <span class="mdl-chip__text">{{ form.tags.label_tag }}</span>#}
+{#                            </span>#}
+{#                             <div class="mdl-textfield mdl-js-textfield">#}
+{#                                {{ form.tags }}#}
+{#                                <label class="mdl-textfield__label" for="sample1">Text...</label>#}
+{#                            </div>#}
+
+                        </div>
+                        <button type="submit" id="demo-show-toast" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="background-color: #009688 !important">新建</button>
+                        <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+                          <div class="mdl-snackbar__text"></div>
+                          <button class="mdl-snackbar__action" type="button"></button>
+                        </div>
+                        <input type="hidden" name="next" value="{{ next }}"/>
+                    </form>
+                    <br>
+                    <div class="blank-bk" style="height: 200px"></div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 {% endblock %}
 
 {% block script_content %}
@@ -58,6 +79,19 @@
             });
         }
 
+        (function() {
+            'use strict';
+            var snackbarContainer = document.querySelector('#demo-toast-example');
+            var showToastButton = document.querySelector('#demo-show-toast');
+            showToastButton.addEventListener('click', function() {
+                'use strict';
+                var data = {message: '主题新建成功！ '};
+                snackbarContainer.MaterialSnackbar.showSnackbar(data);
+            });
+        }());
+
     </script>
+
+
 {% endblock %}
 
